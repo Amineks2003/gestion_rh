@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/mongodb.js";
 import authRouter from './routes/authRoutes.js'
 import performanceRoutes from "./routes/performanceRoutes.js";
+import employeeRoutes from './routes/employeeRoutes.js'
+
+
 
 
 const app =express();
@@ -30,6 +33,7 @@ app.use('/api/auth',authRouter)
 import userRouter from './routes/userRoutes.js';
 app.use('/api/user', userRouter);
 app.use("/api/performance", performanceRoutes);
+app.use('/api/employees', employeeRoutes);
 
 
 

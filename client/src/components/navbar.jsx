@@ -11,12 +11,14 @@ const palette = {
 
 const navLinks = [
   { to: "/", label: "Dashboard" },
+  { to: "/employees", label: "Employés" },
   { to: "/performance", label: "Performances" },
   { to: "/leaves", label: "Congés" },
   { to: "/profile", label: "Profil" },
   { to: "/announcements", label: "Annonces" },
   { to: "/login", label: "Connexion" }
 ];
+
 
 const Navbar = () => {
   const location = useLocation();
