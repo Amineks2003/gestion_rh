@@ -26,7 +26,7 @@ const EmployeeDetails = () => {
       display:"flex",
       alignItems:"center",
       justifyContent:"center"
-    }}><span style={{color:"#299be9",fontSize:"1.3rem"}}>Chargement…</span></div>;
+    }}><span style={{color:"#299be9",fontSize:"1.3rem"}}>Loading...</span></div>;
 
   if (!employee)
     return <div style={{
@@ -35,7 +35,7 @@ const EmployeeDetails = () => {
       display:"flex",
       alignItems:"center",
       justifyContent:"center"
-    }}><span style={{color:"#b72525",fontSize:"1.3rem"}}>Aucun employé trouvé.</span></div>;
+    }}><span style={{color:"#b72525",fontSize:"1.3rem"}}>No employee found.</span></div>;
 
   return (
     <div style={{
@@ -62,11 +62,11 @@ const EmployeeDetails = () => {
           fontSize:"1.02rem",
           wordBreak:"break-word"
         }}>
-          <div><b>Téléphone :</b> {employee.phone || <span style={{color:"#b72525"}}>Non renseigné</span>}</div>
-          <div><b>Adresse :</b> {employee.address || <span style={{color:"#b72525"}}>Non renseigné</span>}</div>
-          <div><b>Salaire :</b> {employee.salary ? `${employee.salary} €` : <span style={{color:"#b72525"}}>Non renseigné</span>}</div>
-          <div><b>ID interne :</b> {employee._id}</div>
-          {/* Documents, etc. si tu veux */}
+          <div><b>Phone:</b> {employee.phone || <span style={{color:"#b72525"}}>Not provided</span>}</div>
+          <div><b>Address:</b> {employee.address || <span style={{color:"#b72525"}}>Not provided</span>}</div>
+          <div><b>Salary:</b> {employee.salary ? `${employee.salary} €` : <span style={{color:"#b72525"}}>Not provided</span>}</div>
+          <div><b>Internal ID:</b> {employee._id}</div>
+          {/* Documents, etc. if you want */}
         </div>
         <button
           onClick={() => navigate("/employees")}
@@ -80,7 +80,7 @@ const EmployeeDetails = () => {
             padding:"0.38rem 1.2rem",
             cursor:"pointer"
           }}
-        >Retour</button>
+        >Return</button>
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ export const getEmployeeById = async (req, res) => {
       .populate('user', 'name email role')
       .populate('documents');
     if (!employee) {
-      return res.status(404).json({ success: false, message: "Employé non trouvé" });
+      return res.status(404).json({ success: false, message: "Employee not found" });
     }
     res.json({ success: true, employee });
   } catch (err) {
@@ -60,7 +60,7 @@ export const updateEmployee = async (req, res) => {
   try {
     const { department, position, phone, address, salary, name, email } = req.body;
     const employee = await Employee.findById(req.params.id);
-    if (!employee) return res.status(404).json({ success: false, message: "Employé non trouvé" });
+    if (!employee) return res.status(404).json({ success: false, message: "Employee not found" });
 
     // Update Employee fields
     if (department) employee.department = department;
@@ -86,13 +86,13 @@ export const updateEmployee = async (req, res) => {
 export const deleteEmployee = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
-    if (!employee) return res.status(404).json({ success: false, message: 'Employé non trouvé' });
+    if (!employee) return res.status(404).json({ success: false, message: 'Employee not found' });
     await Employee.findByIdAndDelete(req.params.id);
 
     // Optionnel : supprimer le user relié
     await User.findByIdAndDelete(employee.user);
 
-    res.json({ success: true, message: 'Employé supprimé' });
+    res.json({ success: true, message: 'Employee deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -104,7 +104,7 @@ export const getEmployeeByUserId = async (req, res) => {
     const employee = await Employee.findOne({ user: req.params.userId })
       .populate('user', 'name email role')
       .populate('documents');
-    if (!employee) return res.status(404).json({ success: false, message: "Employé non trouvé" });
+    if (!employee) return res.status(404).json({ success: false, message: "Employee not found" });
     res.json({ success: true, employee });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

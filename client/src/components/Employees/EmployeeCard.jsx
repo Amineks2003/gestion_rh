@@ -54,9 +54,9 @@ const EmployeeCard = ({ employee, onView, onEdit, onDelete }) => {
           Entré le : {new Date(employee.hireDate).toLocaleDateString()}
         </div>
         <div style={{marginTop:9}}>
-          {onView && <button onClick={()=>onView(employee)} style={btnStyle}>Voir</button>}
-          {onEdit && <button onClick={()=>onEdit(employee)} style={btnStyle}>Modifier</button>}
-          {onDelete && <button onClick={()=>onDelete(employee)} style={btnStyleDel}>Supprimer</button>}
+          {onView && <button onClick={()=>onView(employee)} style={btnStyle}>View</button>}
+          {onEdit && <button onClick={()=>onEdit(employee)} style={btnStyle}>Edit</button>}
+          {onDelete && <button onClick={()=>onDelete(employee)} style={btnStyleDel}>Delete</button>}
         </div>
       </div>
     </div>

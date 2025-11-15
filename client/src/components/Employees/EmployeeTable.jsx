@@ -35,17 +35,17 @@ const EmployeeTable = ({ columns, data, actions }) => (
             ))}
             <td>
               {actions?.onView && (
-                <button style={actionBtn} title="Voir"
+                <button style={actionBtn} title="View"
                   onClick={()=>actions.onView(row)}
                 >👁️</button>
               )}
               {actions?.onEdit && (
-                <button style={actionBtn} title="Modifier"
+                <button style={actionBtn} title="Edit"
                   onClick={()=>actions.onEdit(row)}
                 >✏️</button>
               )}
               {actions?.onDelete && (
-                <button style={actionBtn} title="Supprimer"
+                <button style={actionBtn} title="Delete"
                   onClick={()=>actions.onDelete(row)}
                 >🗑️</button>
               )}

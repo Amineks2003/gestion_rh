@@ -43,7 +43,7 @@ export const getPerformances = async (req, res) => {
     const performances = await Performance.find()
       .populate({
         path: "employee",
-        populate: { path: "user", model: "User" } // pour récupérer le nom complet de l'employee
+        populate: { path: "user", model: "User" }
       })
       .populate("evaluatedBy");
 

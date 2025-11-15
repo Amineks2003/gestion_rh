@@ -11,12 +11,12 @@ const palette = {
 
 const navLinks = [
   { to: "/", label: "Dashboard" },
-  { to: "/employees", label: "Employés" },
+  { to: "/employees", label: "Employees" },
   { to: "/performance", label: "Performances" },
-  { to: "/leaves", label: "Congés" },
-  { to: "/profile", label: "Profil" },
-  { to: "/announcements", label: "Annonces" },
-  { to: "/login", label: "Connexion" }
+  { to: "/leaves", label: "Leaves" },
+  { to: "/profile", label: "Profile" },
+  { to: "/announcements", label: "Announcements" },
+  { to: "/login", label: "Login" }
 ];
 
 
@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <nav style={styles.navbar}>
       <div style={styles.logo}>
-        <span style={{ color: palette.main, fontWeight: "bold" }}>RH</span> <span style={{ color: palette.dark }}>Management</span>
+        <span style={{ color: palette.main, fontWeight: "bold" }}>HR</span> <span style={{ color: palette.dark }}>Human Reach</span>
       </div>
       <div style={styles.links}>
         {navLinks.map((link, i) => (

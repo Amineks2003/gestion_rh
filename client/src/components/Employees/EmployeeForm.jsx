@@ -17,32 +17,32 @@ const labelStyle = {
 const EmployeeForm = ({onSubmit, onChange, values, editMode, loading}) => (
   <form style={{maxWidth:400,margin:"auto"}} onSubmit={onSubmit}>
     <div>
-      <label style={labelStyle}>Nom complet :</label>
-      <input style={inputStyle} name="name" value={values.name || ""} onChange={onChange} placeholder="Nom complet" required />
+      <label style={labelStyle}>Full Name:</label>
+      <input style={inputStyle} name="name" value={values.name || ""} onChange={onChange} placeholder="Full Name" required />
     </div>
     <div>
       <label style={labelStyle}>Email :</label>
       <input style={inputStyle} type="email" name="email" value={values.email || ""} onChange={onChange} placeholder="Email" required />
     </div>
     <div>
-      <label style={labelStyle}>Département :</label>
+      <label style={labelStyle}>Department:</label>
       <input style={inputStyle} name="department" value={values.department || ""} onChange={onChange} required />
     </div>
     <div>
-      <label style={labelStyle}>Poste :</label>
+      <label style={labelStyle}>Position:</label>
       <input style={inputStyle} name="position" value={values.position || ""} onChange={onChange} required />
     </div>
     <div>
-      <label style={labelStyle}>Téléphone :</label>
+      <label style={labelStyle}>Phone:</label>
       <input style={inputStyle} name="phone" value={values.phone || ""} onChange={onChange} />
     </div>
     <div>
-      <label style={labelStyle}>Adresse :</label>
+      <label style={labelStyle}>Address:</label>
       <input style={inputStyle} name="address" value={values.address || ""} onChange={onChange} />
     </div>
     {!editMode && (
       <div>
-        <label style={labelStyle}>Mot de passe :</label>
+        <label style={labelStyle}>Password :</label>
         <input style={inputStyle} type="password" name="password" value={values.password || ""} onChange={onChange} required />
       </div>
     )}
@@ -61,7 +61,7 @@ const EmployeeForm = ({onSubmit, onChange, values, editMode, loading}) => (
       }}
       disabled={loading}
     >
-      {loading ? "Envoi..." : (editMode ? "Enregistrer" : "Ajouter")}
+      {loading ? "Sending..." : (editMode ? "Save" : "Add")}
     </button>
   </form>
 );

@@ -58,7 +58,7 @@ const EditEmployee = () => {
         <h2 style={{
           color:"#377eb7", fontWeight:"700", fontSize:"1.7rem", textAlign: "center", marginBottom:12
         }}>
-          Modifier un Employé
+          Modify Employee
         </h2>
         <EmployeeForm
           values={values}

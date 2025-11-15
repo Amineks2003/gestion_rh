@@ -5,11 +5,11 @@ import EmployeeCard from "../../components/Employees/EmployeeCard.jsx";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { label: "Nom", field: "name" },
+  { label: "Name", field: "name" },
   { label: "Email", field: "email" },
-  { label: "Département", field: "department" },
-  { label: "Poste", field: "position" },
-  { label: "Date d'entrée", field: "hireDate" },
+  { label: "Department", field: "department" },
+  { label: "Position", field: "position" },
+  { label: "Hire Date", field: "hireDate" },
 ];
 
 const palette = {
@@ -40,7 +40,7 @@ const EmployeeList = () => {
   }, []);
 
   const handleDelete = async (row) => {
-    if (window.confirm("Supprimer cet employé ?")) {
+    if (window.confirm("Delete this employee?")) {
       await deleteEmployee(row._id);
       setEmployees(employees.filter(e => e._id !== row._id));
     }
@@ -57,7 +57,7 @@ const EmployeeList = () => {
     }}>
       <div style={{width:"95vw",maxWidth:970}}>
         <h2 style={{ color:"#377eb7", fontWeight:"700", fontSize:"2rem", marginBottom: 24 }}>
-          Gestion des Employés
+          Employee Management
         </h2>
         <button
           onClick={() => navigate("/employees/add")}
@@ -72,7 +72,7 @@ const EmployeeList = () => {
             cursor:"pointer"
           }}
         >
-          + Ajouter un employé
+          + Add Employee
         </button>
         <EmployeeTable
           columns={columns}
