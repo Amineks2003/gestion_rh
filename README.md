@@ -211,5 +211,3 @@ Ce projet fournit une **plateforme RH complète** permettant de gérer :
 
 ---
 ```  
-
-Veux-tu que je t’ajoute aussi une **section “Roadmap”** avec les prochaines fonctionnalités possibles (par exemple gestion des congés, reporting RH, notifications en temps réel) ?
