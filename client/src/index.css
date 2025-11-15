@@ -18,6 +18,9 @@
   .text-carolina-blue { color: #8DBEE1; }
 }
 
-* {
+body {
+  background: linear-gradient(to top, #8dbee1 0%, #f6f7f0 100%);
   font-family: "Outfit", sans-serif;
+  min-height: 100vh;
+  margin: 0;
 }
