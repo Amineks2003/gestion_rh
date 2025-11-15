@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .bg-baby-powder { background-color: #F6F7F0; }
+  .bg-non-photo-blue { background-color: #BFF4FF; }
+  .bg-uranian-blue { background-color: #B1E5FF; }
+  .bg-light-sky-blue { background-color: #A3D5FF; }
+  .bg-carolina-blue { background-color: #8DBEE1; }
+
+  .text-baby-powder { color: #F6F7F0; }
+  .text-non-photo-blue { color: #BFF4FF; }
+  .text-uranian-blue { color: #B1E5FF; }
+  .text-light-sky-blue { color: #A3D5FF; }
+  .text-carolina-blue { color: #8DBEE1; }
+}
+
+* {
+  font-family: "Outfit", sans-serif;
+}
