@@ -7,11 +7,7 @@ const performanceSchema = new mongoose.Schema({
     required: true 
   },
 
-  evaluatedBy: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "HR", 
-    required: true 
-  },
+  evaluatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
   period: { 
     type: String, 

@@ -15,3 +15,9 @@ export const updatePerformance = (id, data) =>
 
 export const deletePerformance = (id) =>
   axios.delete(`${API_URL}/${id}`);
+
+// 🔹 New: fetch Employee by ID
+export const getEmployeeById = (id) => axios.get(`/employees/${id}`);
+
+// 🔹 New: fetch User/HR by ID
+export const getUserById = (id) => axios.get(`/users/${id}`);

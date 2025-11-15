@@ -14,18 +14,23 @@ const PerformanceDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getPerformanceById(id).then((data) => {
-      setPerformance(data);
-      setLoading(false);
-    });
+    getPerformanceById(id)
+      .then((res) => {
+        console.log("Données renvoyées par le backend :", res.data); // ← ici
+        setPerformance(res.data);
+      })
+      .catch((err) => {
+        console.error("Erreur lors de la récupération :", err);
+      })
+      .finally(() => setLoading(false));
   }, [id]);
+
 
   if (loading) return <p className="mt-24 text-center text-gray-500">Loading...</p>;
   if (!performance) return <p className="mt-24 text-center text-gray-500">No data found.</p>;
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 space-y-10 bg-baby-powder rounded-2xl shadow-lg">
-      
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <h2 className="text-3xl font-bold text-blue-500 mb-2 md:mb-0">Performance Details</h2>
@@ -39,10 +44,12 @@ const PerformanceDetails = () => {
 
       {/* Employee Info */}
       <div className="bg-white p-6 rounded-2xl shadow-md space-y-2 border-l-4 border-uranian-blue">
-        <p><span className="font-semibold text-gray-700">Employee:</span> {performance.employee?.fullname}</p>
+        <p><span className="font-semibold text-gray-700">Employee:</span> {performance.employee?.user?.name}</p>
+        <p><span className="font-semibold text-gray-700">Department:</span> {performance.employee?.department}</p>
+        <p><span className="font-semibold text-gray-700">Position:</span> {performance.employee?.position}</p>
         <p><span className="font-semibold text-gray-700">Period:</span> {performance.period}</p>
         <p>
-          <span className="font-semibold text-gray-700">Overall Rating:</span> 
+          <span className="font-semibold text-gray-700">Overall Rating:</span>
           <span className="ml-2 px-3 py-1 rounded-full font-semibold bg-light-sky-blue text-white">
             {performance.overallRating ?? "-"}
           </span>
