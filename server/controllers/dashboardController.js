@@ -1,9 +1,8 @@
 import Employee from "../models/employeeModel.js";
 import User from "../models/userModel.js";
 import Performance from "../models/performanceModel.js";
-import Presence from "../models/presenceModel.js";
 import Announcement from "../models/announcementModel.js";
-import Document from "../models/documentModel.js";
+
 
 export const getDashboardStats = async (req, res) => {
   try {
@@ -12,7 +11,6 @@ export const getDashboardStats = async (req, res) => {
     const totalEmployees = await Employee.countDocuments();
     const totalUsers = await User.countDocuments();
     const totalAnnouncements = await Announcement.countDocuments();
-    const totalDocuments = await Document.countDocuments();
     const totalEvaluations = await Performance.countDocuments();
 
     // ===== PERFORMANCE AVG =====
@@ -32,15 +30,6 @@ export const getDashboardStats = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
-    // ===== TODAY PRESENCE =====
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const todayPresence = await Presence.countDocuments({
-      date: { $gte: today },
-      status: "present",
-    });
-
     res.status(200).json({
       success: true,
 
@@ -48,10 +37,8 @@ export const getDashboardStats = async (req, res) => {
         totalEmployees,
         totalUsers,
         totalAnnouncements,
-        totalDocuments,
         totalEvaluations,
         averageScore,
-        todayPresence,
       },
 
       recentEmployees: recentEmployees.map(e => ({

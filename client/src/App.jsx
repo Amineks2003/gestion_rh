@@ -12,7 +12,9 @@ import EmployeeList from './pages/Employees/EmployeeList.jsx';
 import AddEmployee from './pages/Employees/AddEmployee.jsx';
 import EditEmployee from './pages/Employees/EditEmployee.jsx';
 import EmployeeDetails from './pages/Employees/EmployeeDetails.jsx';
-import Dashboard from "./pages/Dashboard.jsx";
+import Dashboard from "./pages/dashboard.jsx";
+import LeaveList from './pages/Leaves/LeaveList';
+import LeaveDetails from './pages/Leaves/LeaveDetails';
 
 
 const App = () => {
@@ -33,6 +35,8 @@ const App = () => {
         <Route path="/employees/edit/:id" element={<EditEmployee />} />
         <Route path="/employees/:id" element={<EmployeeDetails />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/leaves" element={<LeaveList />} />
+        <Route path="/leaves/:id" element={<LeaveDetails />} />
       </Routes>
     </div> 
   )

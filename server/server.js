@@ -8,6 +8,7 @@ import performanceRoutes from "./routes/performanceRoutes.js";
 import employeeRoutes from './routes/employeeRoutes.js'
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import userRouter from './routes/userRoutes.js';
+import leaveRoutes from './routes/leaveRoutes.js';
 
 const app =express();
 const port =process.env.PORT || 3000
@@ -20,7 +21,8 @@ if (process.env.MONGO_URI) {
 }
 
 
-const allowedOrigins=['http://localhost:5173']
+const allowedOrigins=['http://localhost:5173'];
+
 
 app.get('/',(req,res)=>res.send("API working fine"));
 
@@ -33,6 +35,7 @@ app.use('/api/user', userRouter);
 app.use("/api/performance", performanceRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use('/api/leaves', leaveRoutes);
 
 
 app.listen(port,()=> console.log(`server started on PORT:${port}`));
