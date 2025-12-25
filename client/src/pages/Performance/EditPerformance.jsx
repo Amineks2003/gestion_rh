@@ -73,17 +73,7 @@ const EditPerformance = () => {
       )}
 
       <form onSubmit={submit} className="space-y-8 bg-white p-8 rounded-2xl shadow-lg">
-        <div>
-          <label className="block font-semibold text-gray-700 mb-2">Period</label>
-          <input
-            type="text"
-            placeholder="Ex: Q1 2025"
-            className="w-full p-3 border rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            value={form.period}
-            onChange={(e) => setForm({ ...form, period: e.target.value })}
-          />
-        </div>
-
+        
         <div className="bg-gray-50 p-4 rounded-xl shadow-inner">
           <h3 className="text-xl font-semibold text-gray-800 mb-3">Objectives</h3>
           <ObjectivesForm objectives={form.objectives} setObjectives={(obj) => setForm({ ...form, objectives: obj })} />

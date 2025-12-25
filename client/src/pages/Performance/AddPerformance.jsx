@@ -23,6 +23,9 @@ const AddPerformance = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const currentYear = new Date().getFullYear();
+  const periods = ["Q1", "Q2", "Q3", "Q4"].map(q => `${q} ${currentYear}`);
+
   useEffect(() => setEmployeeInfo(null), [form.employee]);
 
   const submit = async (e) => {
@@ -80,15 +83,17 @@ const AddPerformance = () => {
           <div>
             <label className="font-bold text-carolina-blue text-xl">Period</label>
             <select
-              className="w-full mt-2 p-3 rounded-lg border border-uranian-blue focus:ring-2 focus:ring-light-sky-blue focus:outline-none"
+              className="w-full mt-2 p-3 rounded-lg border border-uranian-blue bg-white text-gray-800 
+                        focus:ring-2 focus:ring-light-sky-blue focus:outline-none shadow-sm"
               value={form.period}
               onChange={(e) => setForm({ ...form, period: e.target.value })}
             >
               <option value="">Select Period</option>
-              <option value="P1">P1</option>
-              <option value="P2">P2</option>
-              <option value="P3">P3</option>
-              <option value="P4">P4</option>
+              {periods.map((p) => (
+                <option key={p} value={p}>
+                  {p}
+                </option>
+              ))}
             </select>
           </div>
         </div>

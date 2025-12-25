@@ -18,6 +18,7 @@ const EmployeeList = () => {
   useEffect(() => {
     fetchEmployees()
       .then((res) => {
+        console.log("Employees API response:", res.data);
         const emp = res.data.employees.map((e) => ({
           _id: e._id,
           name: e.user?.name || "Unknown",

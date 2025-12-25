@@ -4,11 +4,36 @@ import User from '../models/userModel.js';
 // Liste complète des employés
 export const getAllEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find()
-      .populate('user', 'name email role')
-      .populate('documents');
-    res.json({ success: true, employees });
+    // Chercher tous les employés
+    const employees = await Employee.find();
+
+    // Ajouter manuellement les infos user si elles existent
+    const employeesWithUser = await Promise.all(
+      employees.map(async (emp) => {
+        let user = null;
+        try {
+          user = await User.findById(emp.user).select('name email role');
+        } catch (err) {
+          console.warn(`User not found for employee ${emp._id}`);
+        }
+
+        return {
+          _id: emp._id,
+          department: emp.department,
+          position: emp.position,
+          phone: emp.phone,
+          address: emp.address,
+          salary: emp.salary,
+          hireDate: emp.hireDate,
+          documents: emp.documents || [],
+          user: user || { name: 'Unknown', email: '-' }
+        };
+      })
+    );
+
+    res.json({ success: true, employees: employeesWithUser });
   } catch (err) {
+    console.error("Error fetching employees:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -17,13 +42,15 @@ export const getAllEmployees = async (req, res) => {
 export const getEmployeeById = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id)
-      .populate('user', 'name email role')
-      .populate('documents');
+      .populate({ path: 'user', select: 'name email role', strictPopulate: false })
+      .populate({ path: 'documents', strictPopulate: false });
+
     if (!employee) {
       return res.status(404).json({ success: false, message: "Employee not found" });
     }
     res.json({ success: true, employee });
   } catch (err) {
+    console.error("Error fetching employee by ID:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -33,11 +60,17 @@ export const createEmployee = async (req, res) => {
   try {
     const { name, email, password, department, position, phone, address, salary } = req.body;
 
-    // Création user associé (optionnel : check email exist)
+    // Vérifier si l'email existe déjà
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: "Email already in use" });
+    }
+
+    // Création user associé
     const newUser = new User({ name, email, password });
     await newUser.save();
 
-    // Création employé avec le user newUser._id
+    // Création employé
     const employee = new Employee({
       user: newUser._id,
       department,
@@ -51,6 +84,7 @@ export const createEmployee = async (req, res) => {
 
     res.status(201).json({ success: true, employee });
   } catch (err) {
+    console.error("Error creating employee:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
@@ -59,6 +93,7 @@ export const createEmployee = async (req, res) => {
 export const updateEmployee = async (req, res) => {
   try {
     const { department, position, phone, address, salary, name, email } = req.body;
+
     const employee = await Employee.findById(req.params.id);
     if (!employee) return res.status(404).json({ success: false, message: "Employee not found" });
 
@@ -78,35 +113,39 @@ export const updateEmployee = async (req, res) => {
 
     res.json({ success: true, employee });
   } catch (err) {
+    console.error("Error updating employee:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
 
-// Suppression employé
+// Suppression employé + user associé
 export const deleteEmployee = async (req, res) => {
   try {
     const employee = await Employee.findById(req.params.id);
     if (!employee) return res.status(404).json({ success: false, message: 'Employee not found' });
-    await Employee.findByIdAndDelete(req.params.id);
 
-    // Optionnel : supprimer le user relié
+    await Employee.findByIdAndDelete(req.params.id);
     await User.findByIdAndDelete(employee.user);
 
     res.json({ success: true, message: 'Employee deleted' });
   } catch (err) {
+    console.error("Error deleting employee:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };
 
-// Trouver un employé par user
+// Trouver un employé par userId
 export const getEmployeeByUserId = async (req, res) => {
   try {
     const employee = await Employee.findOne({ user: req.params.userId })
-      .populate('user', 'name email role')
-      .populate('documents');
+      .populate({ path: 'user', select: 'name email role', strictPopulate: false })
+      .populate({ path: 'documents', strictPopulate: false });
+
     if (!employee) return res.status(404).json({ success: false, message: "Employee not found" });
+
     res.json({ success: true, employee });
   } catch (err) {
+    console.error("Error fetching employee by userId:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 };

@@ -11,6 +11,7 @@ const PerformanceList = () => {
     try {
       setLoading(true);
       const res = await getPerformances();
+      console.log("Performances API response:", res.data); 
       setPerformances(res.data || []);
       setError(null);
     } catch (err) {
