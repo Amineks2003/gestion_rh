@@ -3,10 +3,8 @@ import User from "../models/userModel.js";
 import Performance from "../models/performanceModel.js";
 import Announcement from "../models/announcementModel.js";
 
-
 export const getDashboardStats = async (req, res) => {
   try {
-    
     // ===== BASIC COUNTS =====
     const totalEmployees = await Employee.countDocuments();
     const totalUsers = await User.countDocuments();

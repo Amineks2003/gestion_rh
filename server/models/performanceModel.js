@@ -12,7 +12,7 @@ const performanceSchema = new mongoose.Schema({
   period: { 
     type: String, 
     required: true 
-  }, // example: "Q1 2025"
+  },
 
   objectives: [{
     title: { type: String, required: true },
