@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import userModel from '../config/models/userModel.js';
+import userModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 import { text } from 'express';
 import transporter from '../config/nodemailer.js';

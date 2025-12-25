@@ -1,7 +1,7 @@
 import express from 'express'
 // fixed path: middlewares (plural)
 import userAuth from '../middlewares/userAuth.js';
-import userModel from '../config/models/userModel.js';
+import userModel from '../models/userModel.js';
 
 const userRouter = express.Router();
 

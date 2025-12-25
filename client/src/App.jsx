@@ -1,5 +1,4 @@
 import React from 'react'
-import Dashboard from './pages/dashboard'
 import { Routes, Route } from "react-router-dom";
 import PerformanceList from "./pages/Performance/PerformanceList";
 import AddPerformance from "./pages/Performance/AddPerformance";
@@ -9,12 +8,11 @@ import Navbar from './components/navbar';
 import Login from './pages/auth/Login';
 import EmailVerify from './pages/auth/EmailVerify';
 import ResetPassword from './pages/auth/ResetPassword';
-//import Home from './pages/auth/Home';
 import EmployeeList from './pages/Employees/EmployeeList.jsx';
 import AddEmployee from './pages/Employees/AddEmployee.jsx';
 import EditEmployee from './pages/Employees/EditEmployee.jsx';
 import EmployeeDetails from './pages/Employees/EmployeeDetails.jsx';
-
+import Dashboard from "./pages/Dashboard.jsx";
 
 
 const App = () => {
@@ -34,12 +32,11 @@ const App = () => {
         <Route path="/employees/add" element={<AddEmployee />} />
         <Route path="/employees/edit/:id" element={<EditEmployee />} />
         <Route path="/employees/:id" element={<EmployeeDetails />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div> 
   )
 }
-
-
 
 export default App;
 

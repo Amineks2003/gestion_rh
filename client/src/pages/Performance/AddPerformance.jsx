@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
-import { createPerformance } from "../../api/performanceApi";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { createPerformance } from "../../api/performanceApi";
 import ObjectivesForm from "../../components/Performance/ObjectivesForm";
 import ScoresForm from "../../components/Performance/ScoresForm";
+import { AppContent } from "../../context/appContext";
 
 const AddPerformance = () => {
   const navigate = useNavigate();
+  const { userData } = useContext(AppContent); // HR connecté
 
   const [form, setForm] = useState({
-    employee: "",     
-    evaluatedBy: "",  
+    employee: "",
+    evaluatedBy: userData?._id || "", // prend directement l'ID du HR connecté
     period: "",
     objectives: [],
     scores: [],
@@ -17,42 +19,30 @@ const AddPerformance = () => {
     feedback: "",
   });
 
-  // Stocke les infos de l'employé pour affichage
   const [employeeInfo, setEmployeeInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Dès que l'ID de l'employé change, on "reset" les infos
-  useEffect(() => {
-    setEmployeeInfo(null);
-  }, [form.employee]);
+  useEffect(() => setEmployeeInfo(null), [form.employee]);
 
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    if (!form.employee || !form.evaluatedBy || !form.period) {
-      setError("Employee, Evaluated By, and Period are required.");
+    if (!form.employee || !form.period) {
+      setError("Employee and Period are required.");
       setLoading(false);
       return;
     }
 
     try {
-      // On crée la performance et on récupère les infos de l'employé
       const res = await createPerformance(form);
-
-      if (res.data.employeeInfo) {
-        setEmployeeInfo(res.data.employeeInfo); // nom, department, position
-      }
-
-      console.log("Performance created:", res.data.performance);
-      console.log("Employee Info:", res.data.employeeInfo);
-
+      if (res.data.employeeInfo) setEmployeeInfo(res.data.employeeInfo);
       navigate("/performance");
     } catch (err) {
-      console.error("Failed to create performance:", err);
-      setError("Failed to create performance. Check the console for details.");
+      console.error(err);
+      setError("Failed to create performance.");
     } finally {
       setLoading(false);
     }
@@ -60,24 +50,23 @@ const AddPerformance = () => {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 space-y-10">
-      <h2 className="text-4xl font-bold text-blue-500 text-center mb-6">
-        Add Performance Review
-      </h2>
-
+      <h2 className="text-4xl font-bold text-[#377eb7] text-center">Add Performance Review</h2>
       {error && <p className="text-red-600 text-center font-semibold">{error}</p>}
 
       <form onSubmit={submit} className="space-y-10">
-        {/* Employee Info */}
-        <div className="bg-baby-powder rounded-2xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Employee */}
+        <div className="bg-white rounded-2xl shadow-lg p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="font-semibold text-gray-700">Employee ID</label>
-            <input
-              type="text"
+            <label className="font-bold text-carolina-blue text-xl">Employee</label>
+            <select
               className="w-full mt-2 p-3 rounded-lg border border-uranian-blue focus:ring-2 focus:ring-light-sky-blue focus:outline-none"
-              placeholder="Enter Employee ObjectId"
               value={form.employee}
               onChange={(e) => setForm({ ...form, employee: e.target.value })}
-            />
+            >
+              <option value="">Select Employee</option>
+              <option value="emp1">John Doe</option>
+              <option value="emp2">Jane Smith</option>
+            </select>
             {employeeInfo && (
               <div className="mt-2 text-gray-700">
                 <p><strong>Name:</strong> {employeeInfo.name}</p>
@@ -87,32 +76,26 @@ const AddPerformance = () => {
             )}
           </div>
 
+          {/* Period */}
           <div>
-            <label className="font-semibold text-gray-700">Evaluated By (HR) ID</label>
-            <input
-              type="text"
-              className="w-full mt-2 p-3 rounded-lg border border-uranian-blue focus:ring-2 focus:ring-light-sky-blue focus:outline-none"
-              placeholder="Enter HR/User ObjectId"
-              value={form.evaluatedBy}
-              onChange={(e) => setForm({ ...form, evaluatedBy: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label className="font-semibold text-gray-700">Period</label>
-            <input
-              type="text"
-              placeholder="T1 2025"
+            <label className="font-bold text-carolina-blue text-xl">Period</label>
+            <select
               className="w-full mt-2 p-3 rounded-lg border border-uranian-blue focus:ring-2 focus:ring-light-sky-blue focus:outline-none"
               value={form.period}
               onChange={(e) => setForm({ ...form, period: e.target.value })}
-            />
+            >
+              <option value="">Select Period</option>
+              <option value="P1">P1</option>
+              <option value="P2">P2</option>
+              <option value="P3">P3</option>
+              <option value="P4">P4</option>
+            </select>
           </div>
         </div>
 
         {/* Objectives */}
-        <div className="bg-non-photo-blue rounded-2xl shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4">Objectives</h3>
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4 text-carolina-blue">Objectives</h3>
           <ObjectivesForm
             objectives={form.objectives}
             setObjectives={(obj) => setForm({ ...form, objectives: obj })}
@@ -120,8 +103,8 @@ const AddPerformance = () => {
         </div>
 
         {/* Scores */}
-        <div className="bg-uranian-blue rounded-2xl shadow-lg p-6">
-          <h3 className="text-xl font-bold mb-4">Scores</h3>
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <h3 className="text-xl font-bold mb-4 text-carolina-blue">Scores</h3>
           <ScoresForm
             scores={form.scores}
             setScores={(scores) => setForm({ ...form, scores })}
@@ -129,23 +112,21 @@ const AddPerformance = () => {
         </div>
 
         {/* Rating & Feedback */}
-        <div className="bg-light-sky-blue rounded-2xl shadow-lg p-6 space-y-4">
-          <h3 className="text-xl font-bold mb-4">Final Rating & Feedback</h3>
+        <div className="bg-white rounded-2xl shadow-lg p-6 space-y-4">
+          <h3 className="text-xl font-bold mb-4 text-carolina-blue">Final Rating & Feedback</h3>
           <div>
-            <label className="font-semibold">Overall Rating</label>
+            <label className="font-semibold text-uranian-blue">Overall Rating</label>
             <input
               type="number"
               max={10}
               min={0}
               className="w-40 mt-2 p-3 rounded-lg border border-carolina-blue focus:ring-2 focus:ring-carolina-blue focus:outline-none ml-3"
               value={form.overallRating}
-              onChange={(e) =>
-                setForm({ ...form, overallRating: Number(e.target.value) })
-              }
+              onChange={(e) => setForm({ ...form, overallRating: Number(e.target.value) })}
             />
           </div>
           <div>
-            <label className="font-semibold">Feedback</label>
+            <label className="font-semibold text-uranian-blue">Feedback</label>
             <textarea
               className="w-full h-28 mt-2 p-3 rounded-lg border border-carolina-blue focus:ring-2 focus:ring-carolina-blue focus:outline-none"
               value={form.feedback}
@@ -158,7 +139,7 @@ const AddPerformance = () => {
           type="submit"
           disabled={loading}
           className={`w-full py-4 text-white font-bold text-lg rounded-2xl shadow-lg transition-all ${
-            loading ? "bg-gray-400 cursor-not-allowed" : "bg-carolina-blue hover:bg-light-sky-blue"
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-light-sky-blue hover:bg-uranian-blue"
           }`}
         >
           {loading ? "Saving..." : "Save Review"}

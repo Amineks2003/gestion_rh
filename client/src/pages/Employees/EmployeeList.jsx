@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { fetchEmployees, deleteEmployee } from "../../api/employeeApi.js";
-import EmployeeTable from "../../components/Employees/EmployeeTable";
-import EmployeeCard from "../../components/Employees/EmployeeCard.jsx";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -12,26 +10,21 @@ const columns = [
   { label: "Hire Date", field: "hireDate" },
 ];
 
-const palette = {
-  background: 'linear-gradient(to top, #8dbee1 0%, #f6f7f0 100%)'
-};
-
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
-  const [viewCard, setViewCard] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchEmployees()
-      .then(res => {
-        const emp = res.data.employees.map(e => ({
+      .then((res) => {
+        const emp = res.data.employees.map((e) => ({
           _id: e._id,
-          name: e.user?.name,
-          email: e.user?.email,
-          department: e.department,
-          position: e.position,
-          hireDate: new Date(e.hireDate).toLocaleDateString()
+          name: e.user?.name || "Unknown",
+          email: e.user?.email || "-",
+          department: e.department || "-",
+          position: e.position || "-",
+          hireDate: e.hireDate ? new Date(e.hireDate).toLocaleDateString() : "-",
         }));
         setEmployees(emp);
       })
@@ -42,67 +35,85 @@ const EmployeeList = () => {
   const handleDelete = async (row) => {
     if (window.confirm("Delete this employee?")) {
       await deleteEmployee(row._id);
-      setEmployees(employees.filter(e => e._id !== row._id));
+      setEmployees(employees.filter((e) => e._id !== row._id));
     }
   };
 
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f6f7f0]">
+        <span className="text-blue-600 text-lg font-semibold">Loading...</span>
+      </div>
+    );
+
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: palette.background,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "flex-start",
-      paddingTop: "3rem"
-    }}>
-      <div style={{width:"95vw",maxWidth:970}}>
-        <h2 style={{ color:"#377eb7", fontWeight:"700", fontSize:"2rem", marginBottom: 24 }}>
+    <div className="min-h-screen py-10 flex justify-center">
+      <div className="w-full max-w-6xl px-8 space-y-6">
+        <h2 className="text-3xl font-bold text-[#377eb7] text-center">
           Employee Management
         </h2>
-        <button
-          onClick={() => navigate("/employees/add")}
-          style={{
-            background:"#8dbee1",
-            color:"#1568a5",
-            border:"none",
-            borderRadius:"16px",
-            padding:"0.7rem 1.3rem",
-            fontWeight:"bold",
-            marginBottom:"1.3rem",
-            cursor:"pointer"
-          }}
-        >
-          + Add Employee
-        </button>
-        <EmployeeTable
-          columns={columns}
-          data={employees}
-          actions={{
-            onView: row => setViewCard(row),
-            onEdit: row => navigate(`/employees/edit/${row._id}`),
-            onDelete: handleDelete
-          }}
-        />
-        {viewCard &&
-          <div style={{
-            position:"fixed",
-            top:0,left:0,right:0,bottom:0,
-            background:"rgba(0,0,0,0.12)",
-            display:"flex",
-            alignItems:"center",
-            justifyContent:"center",
-            zIndex:999
-          }}>
-            <div style={{position:'relative'}}>
-              <EmployeeCard employee={viewCard}
-                onEdit={() => {navigate(`/employees/edit/${viewCard._id}`);}}
-                onDelete={() => handleDelete(viewCard)}
-              />
-              <button onClick={()=>setViewCard(null)}
-                style={{position:"absolute",top:5,right:10,fontSize:"1.2rem",background:"none",border:"none",cursor:"pointer",color:"#b72525"}}>✖</button>
-            </div>
-          </div>
-        }
+        <div className="flex justify-end">
+          <button
+            onClick={() => navigate("/employees/add")}
+            className="bg-blue-100 text-blue-700 font-bold py-2 px-5 rounded-xl hover:bg-blue-200 transition"
+          >
+            + Add Employee
+          </button>
+        </div>
+
+        <div className="overflow-hidden shadow-xl rounded-2xl bg-white">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-100 text-gray-700 uppercase text-sm tracking-wider">
+              <tr>
+                {columns.map((col) => (
+                  <th
+                    key={col.field}
+                    className="py-4 px-6 text-center font-bold"
+                  >
+                    {col.label}
+                  </th>
+                ))}
+                <th className="py-4 px-6 text-center font-bold">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="text-gray-700">
+              {employees.length > 0 ? (
+                employees.map((emp) => (
+                  <tr key={emp._id} className="border-b hover:bg-gray-50 transition">
+                    {columns.map((col) => (
+                      <td key={col.field} className="py-4 px-6 text-center">
+                        {emp[col.field]}
+                      </td>
+                    ))}
+                    <td className="py-4 px-6 flex justify-center gap-2">
+                      <button
+                        onClick={() => navigate(`/employees/edit/${emp._id}`)}
+                        className="text-green-600 hover:underline"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(emp)}
+                        className="text-red-600 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan={columns.length + 1}
+                    className="text-center py-6 text-gray-500"
+                  >
+                    No employees found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -7,15 +7,15 @@
 @layer utilities {
   .bg-baby-powder { background-color: #F6F7F0; }
   .bg-non-photo-blue { background-color: #BFF4FF; }
-  .bg-uranian-blue { background-color: #B1E5FF; }
-  .bg-light-sky-blue { background-color: #A3D5FF; }
+  .bg-uranian-blue { background-color: #5f9ab7; } /* #5f9ab7 */
+  .bg-light-sky-blue { background-color: #A3D5FF; } /* #A3D5FF */
   .bg-carolina-blue { background-color: #8DBEE1; }
 
   .text-baby-powder { color: #F6F7F0; }
   .text-non-photo-blue { color: #BFF4FF; }
-  .text-uranian-blue { color: #B1E5FF; }
-  .text-light-sky-blue { color: #A3D5FF; }
-  .text-carolina-blue { color: #8DBEE1; }
+  .text-uranian-blue { color: #5f9ab7; }
+  .text-light-sky-blue { color: #468ac2; }
+  .text-carolina-blue { color: #506c82; }  /* #8DBEE1 */
 }
 
 body {

@@ -6,9 +6,8 @@ import connectDB from "./config/mongodb.js";
 import authRouter from './routes/authRoutes.js'
 import performanceRoutes from "./routes/performanceRoutes.js";
 import employeeRoutes from './routes/employeeRoutes.js'
-
-
-
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import userRouter from './routes/userRoutes.js';
 
 const app =express();
 const port =process.env.PORT || 3000
@@ -22,19 +21,18 @@ if (process.env.MONGO_URI) {
 
 
 const allowedOrigins=['http://localhost:5173']
+
+app.get('/',(req,res)=>res.send("API working fine"));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({origin: allowedOrigins,credentials:true}))
 
-//API Endpoints
-app.get('/',(req,res)=>res.send("API working fine"));
 app.use('/api/auth',authRouter)
-// enable user routes (get user data)
-import userRouter from './routes/userRoutes.js';
 app.use('/api/user', userRouter);
 app.use("/api/performance", performanceRoutes);
 app.use('/api/employees', employeeRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
 
 
 app.listen(port,()=> console.log(`server started on PORT:${port}`));

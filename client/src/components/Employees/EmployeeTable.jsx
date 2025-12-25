@@ -1,72 +1,72 @@
 import React from "react";
 
 // columns: [{label, field}], data: array of objects, actions: {onView, onEdit, onDelete}
-const EmployeeTable = ({ columns, data, actions }) => (
-  <div style={{
-    background: "rgba(255,255,255,0.7)",
-    borderRadius: "20px",
-    padding: "1.2rem",
-    boxShadow: "0 4px 18px rgba(141,190,225,0.10)",
-    border: "1.5px solid #bff4ff",
-    overflowX: "auto"
-  }}>
-    <table style={{width:"100%",borderCollapse:"collapse"}}>
+const EmployeeTable = ({ columns, data = [], actions }) => (
+  <div className="bg-white rounded-2xl shadow-lg p-6 overflow-x-auto">
+    <table className="w-full border-collapse">
       <thead>
-        <tr style={{background:"#b1e5ff"}}>
-          {columns.map(col => (
-            <th key={col.field} style={{
-              padding: "0.65rem 0.5rem",
-              color: "#377eb7",
-              fontWeight:"bold"
-            }}>
+        <tr className="bg-blue-100">
+          {columns.map((col) => (
+            <th
+              key={col.field}
+              className="px-4 py-2 text-left text-blue-700 font-bold border-b"
+            >
               {col.label}
             </th>
           ))}
-          <th style={{color:"#377eb7"}}>Actions</th>
+          <th className="px-4 py-2 text-blue-700 font-bold border-b">Actions</th>
         </tr>
       </thead>
       <tbody>
-        {data.map(row => (
-          <tr key={row._id} style={{textAlign:"center"}}>
-            {columns.map(col => (
-              <td key={col.field} style={{padding:"0.5rem"}}>
-                {row[col.field]}
+        {data.length > 0 ? (
+          data.map((row) => (
+            <tr key={row._id} className="text-center border-b">
+              {columns.map((col) => (
+                <td key={col.field} className="px-4 py-2">
+                  {row[col.field] || "-"}
+                </td>
+              ))}
+              <td className="px-4 py-2">
+                {actions?.onView && (
+                  <button
+                    className="bg-blue-200 text-blue-800 rounded px-2 py-1 mr-2"
+                    onClick={() => actions.onView(row)}
+                  >
+                    👁️
+                  </button>
+                )}
+                {actions?.onEdit && (
+                  <button
+                    className="bg-blue-200 text-blue-800 rounded px-2 py-1 mr-2"
+                    onClick={() => actions.onEdit(row)}
+                  >
+                    ✏️
+                  </button>
+                )}
+                {actions?.onDelete && (
+                  <button
+                    className="bg-red-200 text-red-800 rounded px-2 py-1"
+                    onClick={() => actions.onDelete(row)}
+                  >
+                    🗑️
+                  </button>
+                )}
               </td>
-            ))}
-            <td>
-              {actions?.onView && (
-                <button style={actionBtn} title="View"
-                  onClick={()=>actions.onView(row)}
-                >👁️</button>
-              )}
-              {actions?.onEdit && (
-                <button style={actionBtn} title="Edit"
-                  onClick={()=>actions.onEdit(row)}
-                >✏️</button>
-              )}
-              {actions?.onDelete && (
-                <button style={actionBtn} title="Delete"
-                  onClick={()=>actions.onDelete(row)}
-                >🗑️</button>
-              )}
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td
+              colSpan={columns.length + 1}
+              className="text-center py-4 text-gray-500"
+            >
+              No employees found
             </td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   </div>
 );
-
-const actionBtn = {
-  background: "#8dbee1",
-  border: "none",
-  borderRadius: "12px",
-  padding: "0.38rem 0.7rem",
-  margin: "0 0.25rem",
-  color: "#1568a5",
-  fontSize: "1em",
-  cursor: "pointer",
-  transition: "background 0.18s",
-};
 
 export default EmployeeTable;

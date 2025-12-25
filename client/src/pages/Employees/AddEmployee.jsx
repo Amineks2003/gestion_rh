@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createEmployee } from "../../api/employeeApi.js";
-import EmployeeForm from "../../components/Employees/EmployeeForm";
+import EmployeeForm from "../../components/Employees/EmployeeForm.jsx";
 import { useNavigate } from "react-router-dom";
 
 const AddEmployee = () => {
@@ -16,9 +16,7 @@ const AddEmployee = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = e => {
-    setValues({...values, [e.target.name]: e.target.value});
-  };
+  const handleChange = e => setValues({...values, [e.target.name]: e.target.value});
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -32,26 +30,9 @@ const AddEmployee = () => {
   };
 
   return (
-    <div style={{
-      minHeight:"100vh",
-      background:'linear-gradient(to top, #8dbee1 0%, #f6f7f0 100%)',
-      display:"flex",
-      alignItems:"center",
-      justifyContent:"center"
-    }}>
-      <div style={{
-        background:"rgba(255,255,255,0.7)",
-        borderRadius:"20px",
-        padding:"2.2rem 2.5rem",
-        maxWidth:500,
-        boxShadow:"0 4px 18px rgba(141,190,225,0.13)",
-        border:"1.5px solid #bff4ff"
-      }}>
-        <h2 style={{
-          color:"#377eb7", fontWeight:"700", fontSize:"1.7rem", textAlign: "center", marginBottom:12
-        }}>
-          Add Employee
-        </h2>
+    <div className="min-h-screen flex items-center justify-center py-10">
+      <div className="bg-white/80 rounded-2xl shadow-lg p-8 max-w-md w-full border border-blue-200">
+        <h2 className="text-2xl font-bold text-[#377eb7] text-center mb-4">Add Employee</h2>
         <EmployeeForm
           values={values}
           onChange={handleChange}

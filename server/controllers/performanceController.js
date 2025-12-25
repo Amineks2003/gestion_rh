@@ -1,6 +1,6 @@
-import Performance from "../config/models/performanceModel.js";
-import Employee from "../config/models/employeeModel.js";
-import User from "../config/models/userModel.js";
+import Performance from "../models/performanceModel.js";
+import Employee from "../models/employeeModel.js";
+import User from "../models/userModel.js";
 
 // 📍 CREATE Performance
 export const createPerformance = async (req, res) => {

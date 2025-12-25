@@ -1,65 +1,16 @@
-const ScoresForm = ({ scores, setScores }) => {
+import React from "react";
+import DynamicListForm from "./DynamicListForm";
 
-  const add = () => {
-    setScores([...scores, { criteria: "", note: 0 }]);
-  };
-
-  const update = (i, field, value) => {
-    const updated = [...scores];
-    updated[i][field] = value;
-    setScores(updated);
-  };
-
-  const remove = (i) => {
-    setScores(scores.filter((_, idx) => idx !== i));
-  };
-
-  return (
-    <div className="space-y-6">
-
-      {scores.map((s, i) => (
-        <div key={i} className="bg-gray-50 border rounded-xl p-5 space-y-4">
-
-          <div>
-            <label className="form-label">Criteria</label>
-            <input
-              className="form-input"
-              value={s.criteria}
-              onChange={(e) => update(i, "criteria", e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label className="form-label">Note (0–10)</label>
-            <input
-              type="number"
-              min="0"
-              max="10"
-              className="form-input w-32"
-              value={s.note}
-              onChange={(e) => update(i, "note", e.target.value)}
-            />
-          </div>
-
-          <button
-            onClick={() => remove(i)}
-            type="button"
-            className="text-red-600 font-semibold hover:underline"
-          >
-            Remove Score
-          </button>
-        </div>
-      ))}
-
-      <button
-        onClick={add}
-        type="button"
-        className="btn-secondary"
-      >
-        + Add Score
-      </button>
-    </div>
-  );
-};
+const ScoresForm = ({ scores, setScores }) => (
+  <DynamicListForm
+    items={scores}
+    setItems={setScores}
+    addLabel="+ Add Score"
+    fields={[
+      { name: "criteria", label: "Criteria", type: "text", default: "" },
+      { name: "note", label: "Note (0–10)", type: "number", default: 0 },
+    ]}
+  />
+);
 
 export default ScoresForm;

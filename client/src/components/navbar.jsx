@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-// Palette RH Manager Pro
-const palette = {
-  main: "#8dbee1",
-  white: "#f6f7f0",
-  hover: "#B1E5FF",
-  dark: "#377eb7"
-};
-
 const navLinks = [
   { to: "/", label: "Dashboard" },
   { to: "/employees", label: "Employees" },
@@ -16,87 +8,45 @@ const navLinks = [
   { to: "/leaves", label: "Leaves" },
   { to: "/profile", label: "Profile" },
   { to: "/announcements", label: "Announcements" },
-  { to: "/login", label: "Login" }
+  { to: "/login", label: "Login" },
 ];
-
 
 const Navbar = () => {
   const location = useLocation();
   const [hoverIndex, setHoverIndex] = useState(null);
 
   return (
-    <nav style={styles.navbar}>
-      <div style={styles.logo}>
-        <span style={{ color: palette.main, fontWeight: "bold" }}>HR</span> <span style={{ color: palette.dark }}>Human Reach</span>
+    <nav className="relative flex justify-center items-center px-8 py-4 bg-gradient-to-r from-[#f6f7f0] via-[#f6f7f0] to-[#bff4ff] shadow-md rounded-b-[25px] z-10 font-sans">
+      {/* Logo */}
+      <div className="absolute left-8 font-extrabold text-[1.6rem] tracking-wide" style={{ textShadow: "0 2px 6px rgba(141,190,225,0.07)" }}>
+        <span className="text-[#8dbee1]">HR</span>{" "}
+        <span className="text-[#377eb7]">Human Reach</span>
       </div>
-      <div style={styles.links}>
-        {navLinks.map((link, i) => (
-          <Link
-            to={link.to}
-            key={link.label}
-            style={{
-              ...styles.link,
-              ...(location.pathname === link.to ? styles.linkActive : {}),
-              ...(hoverIndex === i ? styles.linkHover : {})
-            }}
-            onMouseEnter={() => setHoverIndex(i)}
-            onMouseLeave={() => setHoverIndex(null)}
-          >
-            {link.label}
-          </Link>
-        ))}
+
+      {/* Links */}
+      <div className="flex gap-8 ml-[13rem]">
+        {navLinks.map((link, i) => {
+          const isActive = location.pathname === link.to;
+          const isHover = hoverIndex === i;
+
+          return (
+            <Link
+              to={link.to}
+              key={link.label}
+              onMouseEnter={() => setHoverIndex(i)}
+              onMouseLeave={() => setHoverIndex(null)}
+              className={`
+                text-[#377eb7] font-medium text-[1.05rem] px-2 py-1 rounded-t-md border-b-2 border-transparent transition-colors duration-200
+                ${isActive || isHover ? "text-[#299be9] border-b-2 border-[#8dbee1] font-bold underline" : ""}
+              `}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
-};
-
-const styles = {
-  navbar: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "1.1rem 2rem",
-    background: "linear-gradient(to right, #f6f7f0 60%, #bff4ff 100%)",
-    boxShadow: "0 2px 8px rgba(141,190,225,0.10)",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    position: "relative", // for logo placement
-    borderRadius: "0 0 25px 25px",
-    zIndex: 10
-  },
-  logo: {
-    position: "absolute",
-    left: "2rem",
-    fontWeight: "800",
-    fontSize: "1.6rem",
-    letterSpacing: "1px",
-    textShadow: "0 2px 6px rgba(141,190,225,0.07)"
-  },
-  links: {
-    display: "flex",
-    gap: "2rem",
-    marginLeft: "13rem" // offset for logo (responsive à ajuster si besoin)
-  },
-  link: {
-    color: "#377eb7",
-    textDecoration: "none",
-    fontWeight: "500",
-    fontSize: "1.05rem",
-    transition: "color 0.25s, border-bottom 0.2s",
-    padding: "2px 6px",
-    borderBottom: "2px solid transparent",
-    borderRadius: "5px 5px 0 0",
-  },
-  linkHover: {
-    color: "#299be9",
-    backgroundColor: "#eaf8ff",
-    borderBottom: `2px solid #8dbee1`,
-  },
-  linkActive: {
-    color: "#299be9",
-    backgroundColor: "#eaf8ff",
-    borderBottom: `2px solid #8dbee1`,
-    fontWeight: "bold"
-  }
 };
 
 export default Navbar;

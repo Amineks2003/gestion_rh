@@ -1,5 +1,5 @@
-import Employee from '../config/models/employeeModel.js';
-import User from '../config/models/userModel.js';
+import Employee from '../models/employeeModel.js';
+import User from '../models/userModel.js';
 
 // Liste complète des employés
 export const getAllEmployees = async (req, res) => {
