@@ -41,7 +41,7 @@ const PerformanceList = () => {
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
   return (
-      <div className="max-w-6xl mx-auto p-8 mt-10 space-y-6">
+      <div className="max-w-6xl mx-auto p-8 mt-2 space-y-6">
         {/* Titre centré */}
         <h2 className="text-3xl font-bold text-[#377eb7] text-center">
           Performance Reviews

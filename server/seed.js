@@ -3,10 +3,12 @@ import dotenv from "dotenv";
 import User from "./models/userModel.js";
 import Employee from "./models/employeeModel.js";
 import Performance from "./models/performanceModel.js";
+import Leave from "./models/leaveModel.js";
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rh_management";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rh_management";
 
 const connectDB = async () => {
   try {
@@ -24,6 +26,7 @@ const seedData = async () => {
     await User.deleteMany();
     await Employee.deleteMany();
     await Performance.deleteMany();
+    await Leave.deleteMany();
 
     // 2️⃣ Create 6 users
     const users = await User.insertMany([
@@ -37,23 +40,67 @@ const seedData = async () => {
 
     // 3️⃣ Create 6 employees linked to users
     const employees = await Employee.insertMany([
-      { user: users[0]._id, department: "HR", position: "Manager", phone: "123456", salary: 5000 },
-      { user: users[1]._id, department: "IT", position: "Developer", phone: "234567", salary: 4000 },
-      { user: users[2]._id, department: "Sales", position: "Sales Rep", phone: "345678", salary: 3500 },
-      { user: users[3]._id, department: "Finance", position: "Accountant", phone: "456789", salary: 4500 },
-      { user: users[4]._id, department: "Marketing", position: "Marketer", phone: "567890", salary: 4200 },
-      { user: users[5]._id, department: "Support", position: "Support Agent", phone: "678901", salary: 3800 },
+      {
+        user: users[0]._id,
+        department: "HR",
+        position: "Manager",
+        phone: "123456",
+        salary: 5000,
+      },
+      {
+        user: users[1]._id,
+        department: "IT",
+        position: "Developer",
+        phone: "234567",
+        salary: 4000,
+      },
+      {
+        user: users[2]._id,
+        department: "Sales",
+        position: "Sales Rep",
+        phone: "345678",
+        salary: 3500,
+      },
+      {
+        user: users[3]._id,
+        department: "Finance",
+        position: "Accountant",
+        phone: "456789",
+        salary: 4500,
+      },
+      {
+        user: users[4]._id,
+        department: "Marketing",
+        position: "Marketer",
+        phone: "567890",
+        salary: 4200,
+      },
+      {
+        user: users[5]._id,
+        department: "Support",
+        position: "Support Agent",
+        phone: "678901",
+        salary: 3800,
+      },
     ]);
 
-    // 4️⃣ Create 8 performances
+    // 4️⃣ Create 8 performances (inchangées)
     await Performance.insertMany([
       {
         employee: employees[0]._id,
         evaluatedBy: users[1]._id,
         period: "Q1 2025",
         objectives: [
-          { title: "Recruit 2 new members", description: "Hire efficiently", status: "Achieved" },
-          { title: "Organize training", description: "Train new hires", status: "In Progress" },
+          {
+            title: "Recruit 2 new members",
+            description: "Hire efficiently",
+            status: "Achieved",
+          },
+          {
+            title: "Organize training",
+            description: "Train new hires",
+            status: "In Progress",
+          },
         ],
         scores: [
           { criteria: "Effectiveness", score: 8 },
@@ -67,7 +114,11 @@ const seedData = async () => {
         evaluatedBy: users[0]._id,
         period: "Q1 2025",
         objectives: [
-          { title: "Develop Feature A", description: "Complete module", status: "Achieved" },
+          {
+            title: "Develop Feature A",
+            description: "Complete module",
+            status: "Achieved",
+          },
         ],
         scores: [
           { criteria: "Quality", score: 9 },
@@ -81,7 +132,11 @@ const seedData = async () => {
         evaluatedBy: users[0]._id,
         period: "Q1 2025",
         objectives: [
-          { title: "Reach sales target", description: "Achieve monthly goal", status: "In Progress" },
+          {
+            title: "Reach sales target",
+            description: "Achieve monthly goal",
+            status: "In Progress",
+          },
         ],
         scores: [
           { criteria: "Sales", score: 7 },
@@ -95,7 +150,11 @@ const seedData = async () => {
         evaluatedBy: users[1]._id,
         period: "Q1 2025",
         objectives: [
-          { title: "Prepare financial report", description: "Monthly report accuracy", status: "Achieved" },
+          {
+            title: "Prepare financial report",
+            description: "Monthly report accuracy",
+            status: "Achieved",
+          },
         ],
         scores: [
           { criteria: "Accuracy", score: 9 },
@@ -109,7 +168,11 @@ const seedData = async () => {
         evaluatedBy: users[0]._id,
         period: "Q2 2025",
         objectives: [
-          { title: "Launch campaign", description: "Marketing campaign success", status: "In Progress" },
+          {
+            title: "Launch campaign",
+            description: "Marketing success",
+            status: "In Progress",
+          },
         ],
         scores: [
           { criteria: "Creativity", score: 8 },
@@ -123,7 +186,11 @@ const seedData = async () => {
         evaluatedBy: users[1]._id,
         period: "Q2 2025",
         objectives: [
-          { title: "Resolve support tickets", description: "Customer satisfaction", status: "Achieved" },
+          {
+            title: "Resolve support tickets",
+            description: "Customer satisfaction",
+            status: "Achieved",
+          },
         ],
         scores: [
           { criteria: "Speed", score: 9 },
@@ -137,11 +204,13 @@ const seedData = async () => {
         evaluatedBy: users[2]._id,
         period: "Q2 2025",
         objectives: [
-          { title: "Organize team event", description: "HR team bonding", status: "Not Achieved" },
+          {
+            title: "Organize team event",
+            description: "HR team bonding",
+            status: "Not Achieved",
+          },
         ],
-        scores: [
-          { criteria: "Organization", score: 8 },
-        ],
+        scores: [{ criteria: "Organization", score: 8 }],
         overallRating: 8,
         feedback: "Looking forward to it",
       },
@@ -150,7 +219,11 @@ const seedData = async () => {
         evaluatedBy: users[2]._id,
         period: "Q2 2025",
         objectives: [
-          { title: "Implement CI/CD", description: "Automate deployment", status: "In Progress" },
+          {
+            title: "Implement CI/CD",
+            description: "Automate deployment",
+            status: "In Progress",
+          },
         ],
         scores: [
           { criteria: "Efficiency", score: 7 },
@@ -161,7 +234,71 @@ const seedData = async () => {
       },
     ]);
 
-    console.log("✅ Database seeded successfully with 6 employees and 8 performances");
+    // 5️⃣ CREATE LEAVES DATA
+    await Leave.insertMany([
+      {
+        user: users[0]._id,
+        leaveType: "Sick Leave",
+        startDate: new Date("2025-02-10"),
+        endDate: new Date("2025-02-12"),
+        reason: "Fever and rest recommended",
+        status: "Approved",
+        adminComment: "Get well soon",
+      },
+      {
+        user: users[1]._id,
+        leaveType: "Casual Leave",
+        startDate: new Date("2025-03-01"),
+        endDate: new Date("2025-03-02"),
+        reason: "Family event",
+        status: "Pending",
+      },
+      {
+        user: users[2]._id,
+        leaveType: "Earned Leave",
+        startDate: new Date("2025-04-05"),
+        endDate: new Date("2025-04-09"),
+        reason: "Vacation trip",
+        status: "Approved",
+      },
+      {
+        user: users[3]._id,
+        leaveType: "Unpaid Leave",
+        startDate: new Date("2025-01-20"),
+        endDate: new Date("2025-01-21"),
+        reason: "Personal reasons",
+        status: "Rejected",
+        adminComment: "Project deadline week",
+      },
+      {
+        user: users[4]._id,
+        leaveType: "Sick Leave",
+        startDate: new Date("2025-02-15"),
+        endDate: new Date("2025-02-16"),
+        reason: "Medical appointment",
+        status: "Approved",
+      },
+      {
+        user: users[5]._id,
+        leaveType: "Casual Leave",
+        startDate: new Date("2025-03-10"),
+        endDate: new Date("2025-03-11"),
+        reason: "Travel",
+        status: "Pending",
+      },
+      {
+        user: users[1]._id,
+        leaveType: "Earned Leave",
+        startDate: new Date("2025-05-01"),
+        endDate: new Date("2025-05-05"),
+        reason: "Family vacation",
+        status: "Pending",
+      },
+    ]);
+
+    console.log(
+      "✅ Database seeded successfully with Users, Employees, Performances & Leaves"
+    );
     process.exit();
   } catch (err) {
     console.error(err);

@@ -56,7 +56,7 @@ const EmployeeList = () => {
         <div className="flex justify-end">
           <button
             onClick={() => navigate("/employees/add")}
-            className="bg-blue-100 text-blue-700 font-bold py-2 px-5 rounded-xl hover:bg-blue-200 transition"
+            className="px-5 py-2 bg-blue-500 text-white rounded-xl shadow-md hover:bg-blue-600 transition-all"
           >
             + Add Employee
           </button>

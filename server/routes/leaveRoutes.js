@@ -1,21 +1,24 @@
-import express from 'express';
-import { verifyToken } from '../middlewares/verifyToken.js';
-import { 
-  applyForLeave, 
-  getMyLeaves, 
-  getAllLeaves, 
-  updateLeaveStatus 
-} from '../controllers/leaveController.js';
+import express from "express";
+import {
+  applyForLeave,
+  getMyLeaves,
+  getAllLeaves,
+  updateLeaveStatus,
+} from "../controllers/leaveController.js";
 
 const router = express.Router();
 
-// Routes for regular employees
-router.post('/', verifyToken, applyForLeave);
-router.get('/my-leaves', verifyToken, getMyLeaves);
 
-// Routes for HR/Admin
-router.get('/', verifyToken, getAllLeaves);
-router.patch('/:id/status', verifyToken, updateLeaveStatus);
+// Employee submits leave
+router.post("/", applyForLeave);
 
-// 🔹 THIS WAS THE MISSING PART:
+// Get all leaves (Admin / HR)
+router.get("/", getAllLeaves);
+
+// Get my leaves (for later when auth works)
+router.get("/my-leaves", getMyLeaves);
+
+// Update leave status
+router.patch("/:id/status", updateLeaveStatus);
+
 export default router;
