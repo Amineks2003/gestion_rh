@@ -15,6 +15,8 @@ import EmployeeDetails from './pages/Employees/EmployeeDetails.jsx';
 import Dashboard from "./pages/dashboard.jsx";
 import LeaveList from './pages/Leaves/LeaveList';
 import LeaveDetails from './pages/Leaves/LeaveDetails';
+import Announcements from './pages/Announcements';
+import AddAnnouncement from './pages/AddAnnouncement';
 
 
 const App = () => {
@@ -37,6 +39,8 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/leaves" element={<LeaveList />} />
         <Route path="/leaves/:id" element={<LeaveDetails />} />
+        <Route path="/announcements" element={<Announcements />} />
+        <Route path="/announcements/add" element={<AddAnnouncement />} />
       </Routes>
     </div> 
   )

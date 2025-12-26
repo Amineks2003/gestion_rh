@@ -9,6 +9,7 @@ import employeeRoutes from './routes/employeeRoutes.js'
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import userRouter from './routes/userRoutes.js';
 import leaveRoutes from './routes/leaveRoutes.js';
+import announcementRoutes from "./routes/announcementRoutes.js";
 
 const app =express();
 const port =process.env.PORT || 3000
@@ -36,6 +37,7 @@ app.use("/api/performance", performanceRoutes);
 app.use('/api/employees', employeeRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use('/api/leaves', leaveRoutes);
+app.use("/api/announcements", announcementRoutes);
 
 
 app.listen(port,()=> console.log(`server started on PORT:${port}`));
