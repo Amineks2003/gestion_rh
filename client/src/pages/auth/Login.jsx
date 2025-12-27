@@ -8,7 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { setIsLoggedin, getUserData } = useContext(AppContent);
 
-  const [mode, setMode] = useState("login"); // login ou register
+  const [mode, setMode] = useState("login"); // login or register
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +25,7 @@ const Login = () => {
           localStorage.setItem("token", data.token);
           await getUserData();
           setIsLoggedin(true);
-          toast.success("Inscription réussie");
+          toast.success("Registration successful");
           navigate("/dashboard");
         } else {
           toast.error(data.message);
@@ -36,7 +36,7 @@ const Login = () => {
           localStorage.setItem("token", data.token);
           await getUserData();
           setIsLoggedin(true);
-          toast.success("Connexion réussie");
+          toast.success("Login successful");
           navigate("/dashboard");
         } else {
           toast.error(data.message);
@@ -56,12 +56,12 @@ const Login = () => {
     >
       <div className="bg-white/40 backdrop-blur-lg border border-blue-200 p-8 rounded-2xl shadow-2xl w-full sm:w-96 text-gray-700 text-base transition-all duration-500 hover:scale-[1.03]">
         <h2 className="text-2xl font-bold text-blue-400 text-center mb-3">
-          {mode === "register" ? "Créer un compte" : "Connexion"}
+          {mode === "register" ? "Create an Account" : "Sign In"}
         </h2>
         <p className="text-center text-sm mb-4 text-blue-700">
           {mode === "register"
-            ? "Créez votre compte."
-            : "Connectez-vous à votre espace."}
+            ? "Create your account."
+            : "Sign in to your account."}
         </p>
 
         <form onSubmit={submit}>
@@ -70,7 +70,7 @@ const Login = () => {
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Nom complet"
+                placeholder="Full Name"
                 required
                 className="w-full px-4 py-2 rounded-xl bg-blue-100 text-gray-800 outline-none"
               />
@@ -93,7 +93,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
-              placeholder="Mot de passe"
+              placeholder="Password"
               required
               className="w-full px-4 py-2 rounded-xl bg-blue-100 text-gray-800 outline-none"
             />
@@ -106,7 +106,7 @@ const Login = () => {
                 onClick={() => navigate("/reset-password")}
                 className="text-sm text-blue-600 underline"
               >
-                Mot de passe oublié ?
+                Forgot Password?
               </button>
             </div>
           )}
@@ -116,17 +116,17 @@ const Login = () => {
             type="submit"
             className="w-full py-2 rounded-full bg-blue-400 hover:bg-blue-500 text-white font-medium"
           >
-            {loading ? "Connexion..." : mode === "register" ? "S'inscrire" : "Se connecter"}
+            {loading ? "Signing in..." : mode === "register" ? "Register" : "Sign In"}
           </button>
         </form>
 
         <p className="text-gray-600 text-center text-sm mt-4">
-          {mode === "register" ? "Déjà un compte ?" : "Pas de compte ?"}{" "}
+          {mode === "register" ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             onClick={() => setMode(mode === "register" ? "login" : "register")}
             className="text-blue-400 underline"
           >
-            {mode === "register" ? "Se connecter" : "S'inscrire"}
+            {mode === "register" ? "Sign In" : "Register"}
           </button>
         </p>
       </div>
