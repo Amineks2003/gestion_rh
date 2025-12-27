@@ -9,6 +9,7 @@ import employeeRoutes from './routes/employeeRoutes.js'
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import userRouter from './routes/userRoutes.js';
 import leaveRoutes from './routes/leaveRoutes.js';
+import 'dotenv/config';
 
 const app =express();
 const port =process.env.PORT || 3000

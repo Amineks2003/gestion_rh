@@ -1,40 +1,43 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppContent } from '../../context/appContext.jsx';
-import axiosInstance from '../../utils/axios';
-import { toast } from 'react-toastify';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axios";
+import { toast } from "react-toastify";
+import { AppContent } from "../../context/appContext.jsx";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setIsLoggedin, getUserData } = useContext(AppContent);
 
-  const [mode, setMode] = useState('login');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [mode, setMode] = useState("login"); // login ou register
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      if (mode === 'register') {
-        const { data } = await axiosInstance.post('/auth/register', { name, email, password });
+      if (mode === "register") {
+        const { data } = await axiosInstance.post("/auth/register", { name, email, password });
         if (data.success) {
+          localStorage.setItem("token", data.token);
           await getUserData();
           setIsLoggedin(true);
-          toast.success('Inscription réussie');
-          navigate('/');
+          toast.success("Inscription réussie");
+          navigate("/dashboard");
         } else {
           toast.error(data.message);
         }
       } else {
-        const { data } = await axiosInstance.post('/auth/login', { email, password });
+        const { data } = await axiosInstance.post("/auth/login", { email, password });
         if (data.success) {
+          localStorage.setItem("token", data.token);
           await getUserData();
           setIsLoggedin(true);
-          toast.success('Connexion réussie');
-          navigate('/');
+          toast.success("Connexion réussie");
+          navigate("/dashboard");
         } else {
           toast.error(data.message);
         }
@@ -47,17 +50,22 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-2 sm:px-0"
-      style={{
-        background: 'linear-gradient(to top, #8dbee1 0%, #f6f7f0 100%)'
-      }}
+    <div
+      className="flex items-center justify-center min-h-screen px-2 sm:px-0"
+      style={{ background: "linear-gradient(to top, #8dbee1 0%, #f6f7f0 100%)" }}
     >
       <div className="bg-white/40 backdrop-blur-lg border border-blue-200 p-8 rounded-2xl shadow-2xl w-full sm:w-96 text-gray-700 text-base transition-all duration-500 hover:scale-[1.03]">
-        <h2 className="text-2xl font-bold text-blue-400 text-center mb-3">{mode === 'register' ? 'Créer un compte' : 'Connexion'}</h2>
-        <p className="text-center text-sm mb-4 text-blue-700">{mode === 'register' ? 'Créez votre compte.' : 'Connectez-vous à votre espace.'}</p>
+        <h2 className="text-2xl font-bold text-blue-400 text-center mb-3">
+          {mode === "register" ? "Créer un compte" : "Connexion"}
+        </h2>
+        <p className="text-center text-sm mb-4 text-blue-700">
+          {mode === "register"
+            ? "Créez votre compte."
+            : "Connectez-vous à votre espace."}
+        </p>
 
         <form onSubmit={submit}>
-          {mode === 'register' && (
+          {mode === "register" && (
             <div className="mb-4">
               <input
                 value={name}
@@ -91,37 +99,34 @@ const Login = () => {
             />
           </div>
 
-          <div className="flex justify-center items-center mb-2">
-            <button
-              disabled={loading}
-              type="submit"
-              className="py-2 px-6 rounded-full bg-blue-400 hover:bg-blue-500 text-white font-medium"
-            >
-              {loading ? '...' : (mode === 'register' ? "S'inscrire" : 'Se connecter')}
-            </button>
-          </div>
-          
-          {mode === 'login' && (
-            <div className="flex justify-center mb-2">
+          {mode === "login" && (
+            <div className="flex justify-end mb-2">
               <button
                 type="button"
-                onClick={() => navigate('/reset-password')}
+                onClick={() => navigate("/reset-password")}
                 className="text-sm text-blue-600 underline"
-                style={{marginLeft: '1rem'}}
               >
                 Mot de passe oublié ?
               </button>
             </div>
           )}
+
+          <button
+            disabled={loading}
+            type="submit"
+            className="w-full py-2 rounded-full bg-blue-400 hover:bg-blue-500 text-white font-medium"
+          >
+            {loading ? "Connexion..." : mode === "register" ? "S'inscrire" : "Se connecter"}
+          </button>
         </form>
 
         <p className="text-gray-600 text-center text-sm mt-4">
-          {mode === 'register' ? 'Déjà un compte ?' : "Pas de compte ?"}{' '}
+          {mode === "register" ? "Déjà un compte ?" : "Pas de compte ?"}{" "}
           <button
-            onClick={() => setMode(mode === 'register' ? 'login' : 'register')}
+            onClick={() => setMode(mode === "register" ? "login" : "register")}
             className="text-blue-400 underline"
           >
-            {mode === 'register' ? 'Se connecter' : "S'inscrire"}
+            {mode === "register" ? "Se connecter" : "S'inscrire"}
           </button>
         </p>
       </div>

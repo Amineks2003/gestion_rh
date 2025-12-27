@@ -1,26 +1,20 @@
-//find the token from a cokkie then find the userId from the token
-import jwt from "jsonwebtoken";
-const userAuth = async (req,res,next)=>{
-    const{token}=req.cookies;
-    
-    if(!token){
-        return res.json({success:false, message:"Not Authorized. Login Again"})
-    }
-    try{
-        const tokenDecode =jwt.verify(token,process.env.JWT_SECRET);
-        console.log("Token décodé :", tokenDecode);
+import jwt from 'jsonwebtoken';
 
-        if(tokenDecode.id){
-            //req.body.userId=tokenDecode.id
-            req.userId = tokenDecode.id;
-        }else{
-            return res.json({success: false,message:'Not Authorized. Login Again'});
-        }
-        next()
+const userAuth = (req, res, next) => {
+  const token = req.cookies.token;
 
-    }
-    catch(error){
-        res.json({success:false,message:error.message});
-    }
-}
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Not authorized. Please login." });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // On attache l'utilisateur à la requête
+    req.user = decoded; // { id, role, isAccountVerified }
+    next();
+  } catch (error) {
+    return res.status(401).json({ success: false, message: "Invalid or expired token." });
+  }
+};
+
 export default userAuth;

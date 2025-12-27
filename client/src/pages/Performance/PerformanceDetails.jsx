@@ -24,54 +24,60 @@ const PerformanceDetails = () => {
   if (!performance) return <p className="mt-24 text-center text-gray-500">No data found.</p>;
 
   return (
-    <div className="max-w-5xl mx-auto mt-10 p-6 space-y-10 bg-baby-powder rounded-2xl shadow-lg">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h2 className="text-3xl font-bold text-[#377eb7] mb-2 md:mb-0">Performance Details</h2>
+    <div className="max-w-full sm:max-w-5xl mx-auto mt-6 p-4 sm:p-6 space-y-6 bg-baby-powder rounded-2xl shadow-lg">
+      
+      {/* Header: title + edit button */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#377eb7] mb-2 sm:mb-0">Performance Details</h2>
         <Link
           to={`/performance/edit/${id}`}
-          className="px-6 py-2 bg-uranian-blue text-white rounded-xl shadow-md hover:bg-light-sky-blue transition"
+          className="px-4 sm:px-6 py-2 bg-uranian-blue text-white rounded-xl shadow-md hover:bg-light-sky-blue transition"
         >
           Edit
         </Link>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-md space-y-2 border-l-4 border-uranian-blue">
+      {/* Employee Info */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-md space-y-2 border-l-4 border-uranian-blue">
         <p><span className="font-semibold text-gray-700">Employee:</span> {performance.employee?.user?.name}</p>
         <p><span className="font-semibold text-gray-700">Department:</span> {performance.employee?.department}</p>
         <p><span className="font-semibold text-gray-700">Position:</span> {performance.employee?.position}</p>
         <p><span className="font-semibold text-gray-700">Period:</span> {performance.period}</p>
         <p>
           <span className="font-semibold text-gray-700">Overall Rating:</span>
-          <span className="ml-2 px-3 py-1 rounded-full font-semibold bg-light-sky-blue text-white">{performance.overallRating ?? "-"}</span>
+          <span className="ml-2 px-2 sm:px-3 py-1 rounded-full font-semibold bg-light-sky-blue text-white">{performance.overallRating ?? "-"}</span>
         </p>
       </div>
 
+      {/* Objectives */}
       <div className="space-y-3">
-        <h3 className="text-xl font-semibold text-gray-800 mb-3">Objectives</h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">Objectives</h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {performance.objectives.map((obj, i) => (
             <li key={i} className="bg-white p-4 rounded-2xl border shadow-sm hover:shadow-md transition flex flex-col justify-between">
               <p className="font-semibold text-gray-800 mb-1">{obj.title}</p>
               <p className="text-gray-600 mb-2">{obj.description}</p>
-              <span className={`text-sm px-3 py-1 rounded-full font-medium ${statusColors[obj.status]}`}>{obj.status}</span>
+              <span className={`text-sm px-2 py-1 rounded-full font-medium ${statusColors[obj.status]}`}>{obj.status}</span>
             </li>
           ))}
         </ul>
       </div>
 
+      {/* Scores */}
       <div className="space-y-3">
-        <h3 className="text-xl font-semibold text-gray-800 mb-3">Scores</h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">Scores</h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {performance.scores.map((s, i) => (
             <li key={i} className="bg-white p-4 rounded-2xl border shadow-sm flex justify-between items-center hover:shadow-md transition">
               <span className="text-gray-700">{s.criteria}</span>
-              <span className="font-semibold px-3 py-1 rounded-full bg-light-sky-blue text-white">{s.score}/10</span>
+              <span className="font-semibold px-2 sm:px-3 py-1 rounded-full bg-light-sky-blue text-white">{s.score}/10</span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="bg-white p-6 rounded-2xl shadow-md border-l-4 border-carolina-blue">
+      {/* Feedback */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-md border-l-4 border-carolina-blue">
         <h3 className="text-xl font-semibold text-gray-800 mb-2">Feedback</h3>
         <p className="text-gray-700 whitespace-pre-line">{performance.feedback}</p>
       </div>
