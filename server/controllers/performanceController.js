@@ -5,17 +5,16 @@ import User from "../models/userModel.js";
 // 📍 CREATE Performance
 export const createPerformance = async (req, res) => {
   try {
-    // Récupérer les infos de l'employé directement
-    const employee = await Employee.findById(req.body.employee).populate("user");
+    const employee = await Employee.findById(req.body.employee);
     if (!employee) {
       return res.status(404).json({ message: "Employee not found" });
     }
 
-    // Ajouter les infos de l'employé dans la réponse
+    // Ajouter les infos de l'employé directement
     const performanceData = {
       ...req.body,
       employee: employee._id,
-      employeeName: employee.user.name,
+      employeeName: employee.name,
       department: employee.department,
       position: employee.position,
     };
@@ -26,7 +25,7 @@ export const createPerformance = async (req, res) => {
       message: "Performance created",
       performance,
       employeeInfo: {
-        name: employee.user.name,
+        name: employee.name,
         department: employee.department,
         position: employee.position,
       },
@@ -41,11 +40,8 @@ export const createPerformance = async (req, res) => {
 export const getPerformances = async (req, res) => {
   try {
     const performances = await Performance.find()
-      .populate({
-        path: "employee",
-        populate: { path: "user", model: "User" }
-      })
-      .populate("evaluatedBy");
+      .populate("employee") // juste populate employee, sans user
+      .populate("evaluatedBy"); // si évaluateur est un User
 
     res.status(200).json(performances);
   } catch (error) {
@@ -58,10 +54,7 @@ export const getPerformances = async (req, res) => {
 export const getPerformanceById = async (req, res) => {
   try {
     const performance = await Performance.findById(req.params.id)
-      .populate({
-        path: "employee",
-        populate: { path: "user", model: "User" }
-      })
+      .populate("employee")
       .populate("evaluatedBy");
 
     if (!performance) {

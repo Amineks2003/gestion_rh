@@ -21,22 +21,27 @@ const EmployeeList = () => {
         console.log("Employees API response:", res.data);
         const emp = res.data.employees.map((e) => ({
           _id: e._id,
-          name: e.user?.name || "Unknown",
-          email: e.user?.email || "-",
+          name: e.name || "Unknown", // plus de e.user
+          email: e.email || "-",
           department: e.department || "-",
           position: e.position || "-",
           hireDate: e.hireDate ? new Date(e.hireDate).toLocaleDateString() : "-",
         }));
         setEmployees(emp);
       })
-      .finally(() => setLoading(false))
-      .catch(() => setLoading(false));
+      .catch((err) => console.error(err))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleDelete = async (row) => {
     if (window.confirm("Delete this employee?")) {
-      await deleteEmployee(row._id);
-      setEmployees(employees.filter((e) => e._id !== row._id));
+      try {
+        await deleteEmployee(row._id);
+        setEmployees(employees.filter((e) => e._id !== row._id));
+      } catch (err) {
+        console.error(err);
+        alert("Failed to delete employee");
+      }
     }
   };
 
@@ -62,8 +67,8 @@ const EmployeeList = () => {
           </button>
         </div>
 
-        <div className="overflow-hidden shadow-xl rounded-2xl bg-white">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto w-full shadow-xl rounded-2xl bg-white">
+          <table className="min-w-[800px] w-full text-left border-collapse">
             <thead className="bg-gray-100 text-gray-700 uppercase text-sm tracking-wider">
               <tr>
                 {columns.map((col) => (

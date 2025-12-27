@@ -11,7 +11,7 @@ const LeaveList = () => {
     const fetchLeaves = async () => {
       try {
         const response = await getAllLeaves();
-        const data = response.data || response; 
+        const data = response.data || response;
         setLeaves(data);
         setFilteredLeaves(data);
       } catch (error) {
@@ -26,30 +26,17 @@ const LeaveList = () => {
 
   const filterByStatus = (status) => {
     setCurrentFilter(status);
-    if (status === 'All') {
-      setFilteredLeaves(leaves);
-    } else {
-      setFilteredLeaves(leaves.filter(leave => leave.status === status));
-    }
+    setFilteredLeaves(status === 'All' ? leaves : leaves.filter(l => l.status === status));
   };
 
   const handleStatusUpdate = async (id, newStatus) => {
-    if(!window.confirm(`Are you sure you want to ${newStatus} this leave?`)) return;
+    if (!window.confirm(`Are you sure you want to ${newStatus} this leave?`)) return;
     try {
       await updateLeaveStatus(id, { status: newStatus });
-      
-      const updatedLeaves = leaves.map(leave => 
-        leave._id === id ? { ...leave, status: newStatus } : leave
-      );
-      
-      setLeaves(updatedLeaves);
-      
-      if (currentFilter === 'All') {
-        setFilteredLeaves(updatedLeaves);
-      } else {
-        setFilteredLeaves(updatedLeaves.filter(leave => leave.status === currentFilter));
-      }
 
+      const updatedLeaves = leaves.map(l => l._id === id ? { ...l, status: newStatus } : l);
+      setLeaves(updatedLeaves);
+      setFilteredLeaves(currentFilter === 'All' ? updatedLeaves : updatedLeaves.filter(l => l.status === currentFilter));
     } catch (error) {
       alert("Failed to update status. Please try again.");
     }
@@ -63,10 +50,9 @@ const LeaveList = () => {
     );
 
   return (
-    // Removed explicit bg-[#f6f7f0] to match EmployeeList structure exactly
     <div className="min-h-screen py-10 flex justify-center">
       <div className="w-full max-w-7xl px-8 space-y-6">
-        
+
         <h2 className="text-3xl font-bold text-[#377eb7] text-center">
           Leave Requests Management
         </h2>
@@ -89,8 +75,8 @@ const LeaveList = () => {
         </div>
 
         {/* Table Container */}
-        <div className="overflow-hidden shadow-xl rounded-2xl bg-white">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto w-full shadow-xl rounded-2xl bg-white">
+          <table className="min-w-[800px] w-full text-left border-collapse">
             <thead className="bg-gray-100 text-gray-700 uppercase text-sm tracking-wider">
               <tr>
                 <th className="py-4 px-6 text-center font-bold">Employee</th>
@@ -109,45 +95,30 @@ const LeaveList = () => {
                   </td>
                 </tr>
               ) : (
-                filteredLeaves.map((leave) => (
+                filteredLeaves.map(leave => (
                   <tr key={leave._id} className="border-b hover:bg-gray-50 transition">
-                    
                     <td className="py-4 px-6 text-center">
-                      <div className="flex flex-col items-center">
-                        <span className="font-bold text-gray-800">
-                          {leave.user?.name || "Unknown"}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {leave.user?.employeeId}
-                        </span>
-                      </div>
+                      {leave.employee?.name || "Unknown"}
                     </td>
-
-                    <td className="py-4 px-6 text-center font-medium">
-                      {leave.leaveType}
-                    </td>
-
+                    <td className="py-4 px-6 text-center font-medium">{leave.leaveType}</td>
                     <td className="py-4 px-6 text-center text-sm">
-                      {new Date(leave.startDate).toLocaleDateString()} <br /> 
+                      {new Date(leave.startDate).toLocaleDateString()} <br />
                       <span className="text-gray-400">to</span> <br />
                       {new Date(leave.endDate).toLocaleDateString()}
                     </td>
-
                     <td className="py-4 px-6 text-center">
                       <div className="truncate max-w-[200px] mx-auto text-s" title={leave.reason}>
                         {leave.reason}
                       </div>
                     </td>
-
                     <td className="py-4 px-6 text-center">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
-                        ${leave.status === 'Approved' ? 'bg-green-100 text-green-700' : 
-                          leave.status === 'Rejected' ? 'bg-red-100 text-red-700' : 
+                        ${leave.status === 'Approved' ? 'bg-green-100 text-green-700' :
+                          leave.status === 'Rejected' ? 'bg-red-100 text-red-700' :
                           'bg-yellow-100 text-yellow-700'}`}>
                         {leave.status}
                       </span>
                     </td>
-
                     <td className="py-4 px-6 text-center">
                       {leave.status === 'Pending' ? (
                         <div className="flex justify-center gap-2">
@@ -174,6 +145,7 @@ const LeaveList = () => {
             </tbody>
           </table>
         </div>
+
       </div>
     </div>
   );

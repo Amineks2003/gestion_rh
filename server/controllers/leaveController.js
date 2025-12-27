@@ -1,5 +1,5 @@
 import Leave from '../models/leaveModel.js'; 
-// Note: Ensure leaveModel.js also uses "export default" or "export const"
+import Employee from '../models/employeeModel.js'; // Import Employee si besoin
 
 // @desc    Apply for a new leave
 // @route   POST /api/leaves
@@ -7,8 +7,10 @@ import Leave from '../models/leaveModel.js';
 export const applyForLeave = async (req, res) => {
   try {
     const { leaveType, startDate, endDate, reason } = req.body;
+
+    // Assure-toi que req.user.id correspond à l'ID de l'employee
     const newLeave = new Leave({
-      user: req.user.id,
+      employee: req.user.id,
       leaveType,
       startDate,
       endDate,
@@ -22,12 +24,12 @@ export const applyForLeave = async (req, res) => {
   }
 };
 
-// @desc    Get leaves for the logged-in user
+// @desc    Get leaves for the logged-in employee
 // @route   GET /api/leaves/my-leaves
 // @access  Private (Employee)
 export const getMyLeaves = async (req, res) => {
   try {
-    const leaves = await Leave.find({ user: req.user.id }).sort({ createdAt: -1 });
+    const leaves = await Leave.find({ employee: req.user.id }).sort({ createdAt: -1 });
     res.status(200).json(leaves);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -39,7 +41,11 @@ export const getMyLeaves = async (req, res) => {
 // @access  Private (Admin Only)
 export const getAllLeaves = async (req, res) => {
   try {
-    const leaves = await Leave.find({}).populate('user', 'name email').sort({ createdAt: -1 });
+    // Populate employee info instead of user
+    const leaves = await Leave.find({})
+      .populate('employee', 'name department position')
+      .sort({ createdAt: -1 });
+
     res.status(200).json(leaves);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -62,7 +68,7 @@ export const updateLeaveStatus = async (req, res) => {
       id,
       { status, adminComment },
       { new: true }
-    );
+    ).populate('employee', 'name department position'); // Populate employee
 
     if (!updatedLeave) {
       return res.status(404).json({ message: "Leave request not found" });

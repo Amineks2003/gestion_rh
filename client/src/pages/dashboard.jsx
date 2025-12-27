@@ -270,7 +270,7 @@ const Dashboard = ({ currentUser }) => {
 
       {/* HEADER */}
       <h1 className="text-2xl sm:text-3xl font-extrabold text-blue-500 mb-6 md:mb-8">
-        Hello, {currentUser?.name || "Admin"} 👋
+        Hello 👋
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -324,7 +324,7 @@ const Dashboard = ({ currentUser }) => {
                       key={emp._id}
                       className="border-b py-1 flex justify-between text-gray-700"
                     >
-                      <span>{emp.user?.name || "—"}</span>
+                      <span>{emp.name || "—"}</span>
                       <span className="text-gray-500">{emp.department}</span>
                     </li>
                   ))}
@@ -355,7 +355,7 @@ const Dashboard = ({ currentUser }) => {
                       className="border-b py-1 flex justify-between items-center text-gray-700 hover:bg-white/50 rounded-lg px-2 cursor-pointer transition-colors"
                       onClick={() => navigate(`/performance/${p._id}`)}
                     >
-                      <span>{p.employee?.user?.name || "—"}</span>
+                      <span>{p.employee.name || "—"}</span>
                       <div className="flex items-center gap-2">
                         <span className="text-gray-500">{p.period}</span>
                         <Eye className="w-4 h-4 text-[#377eb7]" />

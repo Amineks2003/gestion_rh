@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
 const leaveSchema = new mongoose.Schema({
-  user: {
+  employee: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to your existing User model
+    ref: 'Employee', // Changed from 'User' to 'Employee'
     required: true,
   },
   leaveType: {
@@ -18,7 +18,6 @@ const leaveSchema = new mongoose.Schema({
   endDate: {
     type: Date,
     required: true,
-    // Basic validation to ensure end date is not before start date
     validate: [
       function(value) {
         return this.startDate <= value;
@@ -45,5 +44,4 @@ const leaveSchema = new mongoose.Schema({
 });
 
 const Leave = mongoose.model('Leave', leaveSchema);
-export default Leave; 
-// INSTEAD OF: module.exports = Leave;
+export default Leave;

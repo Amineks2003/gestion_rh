@@ -1,5 +1,8 @@
-// Ensure you are importing your configured axios
-import axios from '../utils/axios'; 
+// utils/profileApi.js
+import axios from "../utils/axios"; // ton axios déjà configuré
 
-export const fetchProfile = (id) => axios.get(`/profile/${id}`);
-export const updateProfile = (id, data) => axios.put(`/profile/${id}`, data);
+// Récupérer le profil du user connecté
+export const fetchProfile = () => axios.get("/profile", { withCredentials: true });
+
+// Mettre à jour le profil du user connecté
+export const updateProfile = (data) => axios.put("/profile", data, { withCredentials: true });

@@ -91,7 +91,7 @@ const AnnouncementList = () => {
   }
 
   return (
-    <div className="min-h-screen py-10 bg-gradient-to-br from-[#f6f7f0] to-[#e8f4f8]">
+    <div className="min-h-screen py-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-6">
         {/* Header */}
         <h2 className="text-3xl font-bold text-[#377eb7] text-center">
@@ -173,7 +173,7 @@ const AnnouncementList = () => {
                     </p>
                     <div className="text-sm text-gray-400">
                       <span>
-                        By {announcement.createdBy?.name || "Unknown"} •{" "}
+                        By Manager-
                         {new Date(announcement.publishedAt).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "short",

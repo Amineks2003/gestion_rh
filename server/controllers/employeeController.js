@@ -4,34 +4,23 @@ import User from '../models/userModel.js';
 // Liste complète des employés
 export const getAllEmployees = async (req, res) => {
   try {
-    // Chercher tous les employés
     const employees = await Employee.find();
 
-    // Ajouter manuellement les infos user si elles existent
-    const employeesWithUser = await Promise.all(
-      employees.map(async (emp) => {
-        let user = null;
-        try {
-          user = await User.findById(emp.user).select('name email role');
-        } catch (err) {
-          console.warn(`User not found for employee ${emp._id}`);
-        }
+    // On renvoie directement les champs de Employee
+    const employeesData = employees.map(emp => ({
+      _id: emp._id,
+      name: emp.name || "Unknown",
+      email: emp.email || "-",
+      department: emp.department,
+      position: emp.position,
+      phone: emp.phone,
+      address: emp.address,
+      salary: emp.salary,
+      hireDate: emp.hireDate,
+      documents: emp.documents || [],
+    }));
 
-        return {
-          _id: emp._id,
-          department: emp.department,
-          position: emp.position,
-          phone: emp.phone,
-          address: emp.address,
-          salary: emp.salary,
-          hireDate: emp.hireDate,
-          documents: emp.documents || [],
-          user: user || { name: 'Unknown', email: '-' }
-        };
-      })
-    );
-
-    res.json({ success: true, employees: employeesWithUser });
+    res.json({ success: true, employees: employeesData });
   } catch (err) {
     console.error("Error fetching employees:", err);
     res.status(500).json({ success: false, message: err.message });
@@ -41,14 +30,27 @@ export const getAllEmployees = async (req, res) => {
 // Un seul employé (par ID)
 export const getEmployeeById = async (req, res) => {
   try {
-    const employee = await Employee.findById(req.params.id)
-      .populate({ path: 'user', select: 'name email role', strictPopulate: false })
-      .populate({ path: 'documents', strictPopulate: false });
+    const employee = await Employee.findById(req.params.id).populate('documents');
 
     if (!employee) {
       return res.status(404).json({ success: false, message: "Employee not found" });
     }
-    res.json({ success: true, employee });
+
+    res.json({
+      success: true,
+      employee: {
+        _id: employee._id,
+        name: employee.name,
+        email: employee.email,
+        department: employee.department,
+        position: employee.position,
+        phone: employee.phone,
+        address: employee.address,
+        salary: employee.salary,
+        hireDate: employee.hireDate,
+        documents: employee.documents || [],
+      },
+    });
   } catch (err) {
     console.error("Error fetching employee by ID:", err);
     res.status(500).json({ success: false, message: err.message });
@@ -58,30 +60,20 @@ export const getEmployeeById = async (req, res) => {
 // Créer un employé + son user
 export const createEmployee = async (req, res) => {
   try {
-    const { name, email, password, department, position, phone, address, salary } = req.body;
+    const { name, email, department, position, phone, address, salary } = req.body;
 
-    // Vérifier si l'email existe déjà
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ success: false, message: "Email already in use" });
-    }
-
-    // Création user associé
-    const newUser = new User({ name, email, password });
-    await newUser.save();
-
-    // Création employé
     const employee = new Employee({
-      user: newUser._id,
+      name,
+      email,
       department,
       position,
       phone,
       address,
       salary,
-      documents: []
+      documents: [],
     });
-    await employee.save();
 
+    await employee.save();
     res.status(201).json({ success: true, employee });
   } catch (err) {
     console.error("Error creating employee:", err);
@@ -92,25 +84,20 @@ export const createEmployee = async (req, res) => {
 // Update un employé (et le user associé)
 export const updateEmployee = async (req, res) => {
   try {
-    const { department, position, phone, address, salary, name, email } = req.body;
+    const { name, email, department, position, phone, address, salary } = req.body;
 
     const employee = await Employee.findById(req.params.id);
     if (!employee) return res.status(404).json({ success: false, message: "Employee not found" });
 
-    // Update Employee fields
+    if (name) employee.name = name;
+    if (email) employee.email = email;
     if (department) employee.department = department;
     if (position) employee.position = position;
     if (phone) employee.phone = phone;
     if (address) employee.address = address;
     if (salary) employee.salary = salary;
+
     await employee.save();
-
-    // Update User fields
-    const user = await User.findById(employee.user);
-    if (name) user.name = name;
-    if (email) user.email = email;
-    await user.save();
-
     res.json({ success: true, employee });
   } catch (err) {
     console.error("Error updating employee:", err);
@@ -125,8 +112,6 @@ export const deleteEmployee = async (req, res) => {
     if (!employee) return res.status(404).json({ success: false, message: 'Employee not found' });
 
     await Employee.findByIdAndDelete(req.params.id);
-    await User.findByIdAndDelete(employee.user);
-
     res.json({ success: true, message: 'Employee deleted' });
   } catch (err) {
     console.error("Error deleting employee:", err);

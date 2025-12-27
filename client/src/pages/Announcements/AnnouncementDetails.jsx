@@ -173,7 +173,7 @@ const AnnouncementDetails = () => {
               <div className="flex items-center gap-2 text-gray-600">
                 <User className="w-5 h-5 text-[#377eb7]" />
                 <span className="font-medium">Created by:</span>
-                <span>{announcement.createdBy?.name || "Unknown"}</span>
+                <span>Manager</span>
               </div>
               <div className="hidden sm:block w-px bg-gray-300"></div>
               <div className="flex items-center gap-2 text-gray-600">

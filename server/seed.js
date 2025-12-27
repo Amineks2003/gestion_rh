@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import User from "./models/userModel.js";
 import Employee from "./models/employeeModel.js";
 import Performance from "./models/performanceModel.js";
-import Leave from "./models/leaveModel.js";
+import Announcement from "./models/announcementModel.js";
+import Leave from "./models/leaveModel.js"; // <-- Import Leave model
+import User from "./models/userModel.js"; // juste pour créer un admin
 
 dotenv.config();
 
-const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rh_management";
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rh_management";
 
 const connectDB = async () => {
   try {
@@ -23,295 +23,70 @@ const connectDB = async () => {
 const seedData = async () => {
   try {
     // 1️⃣ Clear existing data
-    await User.deleteMany();
     await Employee.deleteMany();
     await Performance.deleteMany();
-    await Leave.deleteMany();
+    await Announcement.deleteMany();
+    await Leave.deleteMany(); // <-- Clear leaves
+    console.log("🧹 Old data removed");
 
-    // 2️⃣ Create 6 users
-    const users = await User.insertMany([
-      { name: "Alice", email: "alice@test.com", password: "123456" },
-      { name: "Bob", email: "bob@test.com", password: "123456" },
-      { name: "Charlie", email: "charlie@test.com", password: "123456" },
-      { name: "David", email: "david@test.com", password: "123456" },
-      { name: "Eve", email: "eve@test.com", password: "123456" },
-      { name: "Frank", email: "frank@test.com", password: "123456" },
-    ]);
+    // 2️⃣ Create admin user if not exists
+    let admin = await User.findOne({ role: "admin" });
+    if (!admin) {
+      admin = await User.create({
+        name: "Admin",
+        email: "admin@test.com",
+        password: "admin123",
+        role: "admin",
+      });
+      console.log("👤 Admin user created");
+    } else {
+      console.log("👤 Admin user found:", admin.name);
+    }
 
-    // 3️⃣ Create 6 employees linked to users
-    // ADDED: address and hireDate for the Profile Page
+    // 3️⃣ Create Employees
     const employees = await Employee.insertMany([
-      {
-        user: users[0]._id,
-        department: "HR",
-        position: "Manager",
-        phone: "123456",
-        salary: 5000,
-        address: "123 HR Blvd, Tunis",        // <--- Added
-        hireDate: new Date("2023-01-15"),     // <--- Added
-      },
-      {
-        user: users[1]._id,
-        department: "IT",
-        position: "Developer",
-        phone: "234567",
-        salary: 4000,
-        address: "404 Tech Ave, Ariana",      // <--- Added
-        hireDate: new Date("2023-03-10"),     // <--- Added
-      },
-      {
-        user: users[2]._id,
-        department: "Sales",
-        position: "Sales Rep",
-        phone: "345678",
-        salary: 3500,
-        address: "789 Sales Rd, Sousse",      // <--- Added
-        hireDate: new Date("2023-06-20"),     // <--- Added
-      },
-      {
-        user: users[3]._id,
-        department: "Finance",
-        position: "Accountant",
-        phone: "456789",
-        salary: 4500,
-        address: "101 Finance St, Bizerte",   // <--- Added
-        hireDate: new Date("2023-08-01"),     // <--- Added
-      },
-      {
-        user: users[4]._id,
-        department: "Marketing",
-        position: "Marketer",
-        phone: "567890",
-        salary: 4200,
-        address: "202 Market Ln, Sfax",       // <--- Added
-        hireDate: new Date("2023-09-10"),     // <--- Added
-      },
-      {
-        user: users[5]._id,
-        department: "Support",
-        position: "Support Agent",
-        phone: "678901",
-        salary: 3800,
-        address: "303 Support Way, Gabes",    // <--- Added
-        hireDate: new Date("2023-11-05"),     // <--- Added
-      },
+      { name: "Alice Johnson", email: "alice.johnson@test.com", department: "HR", position: "Manager", phone: "11111111", salary: 5000 },
+      { name: "Bob Smith", email: "bob.smith@test.com", department: "IT", position: "Developer", phone: "22222222", salary: 4500 },
+      { name: "Charlie Brown", email: "charlie.brown@test.com", department: "Finance", position: "Accountant", phone: "33333333", salary: 4300 },
+      { name: "Diana Prince", email: "diana.prince@test.com", department: "Marketing", position: "Marketer", phone: "44444444", salary: 4200 },
+      { name: "Ethan Hunt", email: "ethan.hunt@test.com", department: "Support", position: "Support Agent", phone: "55555555", salary: 3800 },
     ]);
+    console.log("👨‍💼 5 Employees created");
 
-    // 4️⃣ Create 8 performances (inchangées)
-    await Performance.insertMany([
-      {
-        employee: employees[0]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Recruit 2 new members",
-            description: "Hire efficiently",
-            status: "Achieved",
-          },
-          {
-            title: "Organize training",
-            description: "Train new hires",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Effectiveness", score: 8 },
-          { criteria: "Timeliness", score: 9 },
-        ],
-        overallRating: 8.5,
-        feedback: "Good HR management",
-      },
-      {
-        employee: employees[1]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Develop Feature A",
-            description: "Complete module",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Quality", score: 9 },
-          { criteria: "Efficiency", score: 8 },
-        ],
-        overallRating: 8.5,
-        feedback: "Great coding work",
-      },
-      {
-        employee: employees[2]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Reach sales target",
-            description: "Achieve monthly goal",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Sales", score: 7 },
-          { criteria: "Client follow-up", score: 8 },
-        ],
-        overallRating: 7.5,
-        feedback: "Needs improvement in follow-ups",
-      },
-      {
-        employee: employees[3]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Prepare financial report",
-            description: "Monthly report accuracy",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Accuracy", score: 9 },
-          { criteria: "Timeliness", score: 8 },
-        ],
-        overallRating: 8.5,
-        feedback: "Excellent finance work",
-      },
-      {
-        employee: employees[4]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Launch campaign",
-            description: "Marketing success",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Creativity", score: 8 },
-          { criteria: "Reach", score: 7 },
-        ],
-        overallRating: 7.5,
-        feedback: "Good start",
-      },
-      {
-        employee: employees[5]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Resolve support tickets",
-            description: "Customer satisfaction",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Speed", score: 9 },
-          { criteria: "Accuracy", score: 9 },
-        ],
-        overallRating: 9,
-        feedback: "Excellent support",
-      },
-      {
-        employee: employees[0]._id,
-        evaluatedBy: users[2]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Organize team event",
-            description: "HR team bonding",
-            status: "Not Achieved",
-          },
-        ],
-        scores: [{ criteria: "Organization", score: 8 }],
-        overallRating: 8,
-        feedback: "Looking forward to it",
-      },
-      {
-        employee: employees[1]._id,
-        evaluatedBy: users[2]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Implement CI/CD",
-            description: "Automate deployment",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Efficiency", score: 7 },
-          { criteria: "Reliability", score: 8 },
-        ],
-        overallRating: 7.5,
-        feedback: "Keep improving",
-      },
-    ]);
+    // 4️⃣ Create Performances
+    const performancesData = [
+      { employee: employees[0]._id, evaluatedBy: admin._id, period: "Q1 2025", overallRating: 8.5, feedback: "Great management" },
+      { employee: employees[1]._id, evaluatedBy: admin._id, period: "Q1 2025", overallRating: 9, feedback: "Excellent developer" },
+      { employee: employees[2]._id, evaluatedBy: admin._id, period: "Q1 2025", overallRating: 8, feedback: "Good finance work" },
+      { employee: employees[3]._id, evaluatedBy: admin._id, period: "Q1 2025", overallRating: 7.5, feedback: "Creative marketing" },
+      { employee: employees[4]._id, evaluatedBy: admin._id, period: "Q1 2025", overallRating: 9.2, feedback: "Amazing customer support" },
+    ];
+    await Performance.insertMany(performancesData);
+    console.log("📊 5 Performances created");
 
-    // 5️⃣ CREATE LEAVES DATA
-    await Leave.insertMany([
-      {
-        user: users[0]._id,
-        leaveType: "Sick Leave",
-        startDate: new Date("2025-02-10"),
-        endDate: new Date("2025-02-12"),
-        reason: "Fever and rest recommended",
-        status: "Approved",
-        adminComment: "Get well soon",
-      },
-      {
-        user: users[1]._id,
-        leaveType: "Casual Leave",
-        startDate: new Date("2025-03-01"),
-        endDate: new Date("2025-03-02"),
-        reason: "Family event",
-        status: "Pending",
-      },
-      {
-        user: users[2]._id,
-        leaveType: "Earned Leave",
-        startDate: new Date("2025-04-05"),
-        endDate: new Date("2025-04-09"),
-        reason: "Vacation trip",
-        status: "Approved",
-      },
-      {
-        user: users[3]._id,
-        leaveType: "Unpaid Leave",
-        startDate: new Date("2025-01-20"),
-        endDate: new Date("2025-01-21"),
-        reason: "Personal reasons",
-        status: "Rejected",
-        adminComment: "Project deadline week",
-      },
-      {
-        user: users[4]._id,
-        leaveType: "Sick Leave",
-        startDate: new Date("2025-02-15"),
-        endDate: new Date("2025-02-16"),
-        reason: "Medical appointment",
-        status: "Approved",
-      },
-      {
-        user: users[5]._id,
-        leaveType: "Casual Leave",
-        startDate: new Date("2025-03-10"),
-        endDate: new Date("2025-03-11"),
-        reason: "Travel",
-        status: "Pending",
-      },
-      {
-        user: users[1]._id,
-        leaveType: "Earned Leave",
-        startDate: new Date("2025-05-01"),
-        endDate: new Date("2025-05-05"),
-        reason: "Family vacation",
-        status: "Pending",
-      },
-    ]);
+    // 5️⃣ Create Announcements
+    const announcementsData = [
+      { title: "Holiday Notice", content: "Office closed Friday", createdBy: admin._id },
+      { title: "New Policy", content: "Updated HR policies", createdBy: admin._id },
+      { title: "Team Event", content: "Team building next week", createdBy: admin._id },
+      { title: "Reminder", content: "Submit monthly reports", createdBy: admin._id },
+      { title: "Office Renovation", content: "Renovation starts next month", createdBy: admin._id },
+    ];
+    await Announcement.insertMany(announcementsData);
+    console.log("📢 5 Announcements created");
 
-    console.log(
-      "✅ Database seeded successfully with Users, Employees, Performances & Leaves"
-    );
+    // 6️⃣ Create Leaves (1 pour chaque employé)
+    const leavesData = [
+      { employee: employees[0]._id, leaveType: "Sick Leave", startDate: new Date("2025-01-10"), endDate: new Date("2025-01-12"), reason: "Flu", status: "Pending" },
+      { employee: employees[1]._id, leaveType: "Casual Leave", startDate: new Date("2025-02-05"), endDate: new Date("2025-02-06"), reason: "Family function", status: "Pending" },
+      { employee: employees[2]._id, leaveType: "Earned Leave", startDate: new Date("2025-03-01"), endDate: new Date("2025-03-03"), reason: "Vacation", status: "Pending" },
+      { employee: employees[3]._id, leaveType: "Unpaid Leave", startDate: new Date("2025-04-15"), endDate: new Date("2025-04-16"), reason: "Personal work", status: "Pending" },
+      { employee: employees[4]._id, leaveType: "Casual Leave", startDate: new Date("2025-05-20"), endDate: new Date("2025-05-20"), reason: "Errands", status: "Pending" },
+    ];
+    await Leave.insertMany(leavesData);
+    console.log("📝 5 Leaves created");
+
+    console.log("🎉 Database Seeded Successfully");
     process.exit();
   } catch (err) {
     console.error(err);
@@ -320,315 +95,3 @@ const seedData = async () => {
 };
 
 connectDB().then(seedData);
-
-
-/*
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import User from "./models/userModel.js";
-import Employee from "./models/employeeModel.js";
-import Performance from "./models/performanceModel.js";
-import Leave from "./models/leaveModel.js";
-
-dotenv.config();
-
-const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/rh_management";
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect(MONGO_URI);
-    console.log("✅ Connected to MongoDB");
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-};
-
-const seedData = async () => {
-  try {
-    // 1️⃣ Clear existing data
-    await User.deleteMany();
-    await Employee.deleteMany();
-    await Performance.deleteMany();
-    await Leave.deleteMany();
-
-    // 2️⃣ Create 6 users
-    const users = await User.insertMany([
-      { name: "Alice", email: "alice@test.com", password: "123456" },
-      { name: "Bob", email: "bob@test.com", password: "123456" },
-      { name: "Charlie", email: "charlie@test.com", password: "123456" },
-      { name: "David", email: "david@test.com", password: "123456" },
-      { name: "Eve", email: "eve@test.com", password: "123456" },
-      { name: "Frank", email: "frank@test.com", password: "123456" },
-    ]);
-
-    // 3️⃣ Create 6 employees linked to users
-    const employees = await Employee.insertMany([
-      {
-        user: users[0]._id,
-        department: "HR",
-        position: "Manager",
-        phone: "123456",
-        salary: 5000,
-      },
-      {
-        user: users[1]._id,
-        department: "IT",
-        position: "Developer",
-        phone: "234567",
-        salary: 4000,
-      },
-      {
-        user: users[2]._id,
-        department: "Sales",
-        position: "Sales Rep",
-        phone: "345678",
-        salary: 3500,
-      },
-      {
-        user: users[3]._id,
-        department: "Finance",
-        position: "Accountant",
-        phone: "456789",
-        salary: 4500,
-      },
-      {
-        user: users[4]._id,
-        department: "Marketing",
-        position: "Marketer",
-        phone: "567890",
-        salary: 4200,
-      },
-      {
-        user: users[5]._id,
-        department: "Support",
-        position: "Support Agent",
-        phone: "678901",
-        salary: 3800,
-      },
-    ]);
-
-    // 4️⃣ Create 8 performances (inchangées)
-    await Performance.insertMany([
-      {
-        employee: employees[0]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Recruit 2 new members",
-            description: "Hire efficiently",
-            status: "Achieved",
-          },
-          {
-            title: "Organize training",
-            description: "Train new hires",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Effectiveness", score: 8 },
-          { criteria: "Timeliness", score: 9 },
-        ],
-        overallRating: 8.5,
-        feedback: "Good HR management",
-      },
-      {
-        employee: employees[1]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Develop Feature A",
-            description: "Complete module",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Quality", score: 9 },
-          { criteria: "Efficiency", score: 8 },
-        ],
-        overallRating: 8.5,
-        feedback: "Great coding work",
-      },
-      {
-        employee: employees[2]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Reach sales target",
-            description: "Achieve monthly goal",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Sales", score: 7 },
-          { criteria: "Client follow-up", score: 8 },
-        ],
-        overallRating: 7.5,
-        feedback: "Needs improvement in follow-ups",
-      },
-      {
-        employee: employees[3]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q1 2025",
-        objectives: [
-          {
-            title: "Prepare financial report",
-            description: "Monthly report accuracy",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Accuracy", score: 9 },
-          { criteria: "Timeliness", score: 8 },
-        ],
-        overallRating: 8.5,
-        feedback: "Excellent finance work",
-      },
-      {
-        employee: employees[4]._id,
-        evaluatedBy: users[0]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Launch campaign",
-            description: "Marketing success",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Creativity", score: 8 },
-          { criteria: "Reach", score: 7 },
-        ],
-        overallRating: 7.5,
-        feedback: "Good start",
-      },
-      {
-        employee: employees[5]._id,
-        evaluatedBy: users[1]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Resolve support tickets",
-            description: "Customer satisfaction",
-            status: "Achieved",
-          },
-        ],
-        scores: [
-          { criteria: "Speed", score: 9 },
-          { criteria: "Accuracy", score: 9 },
-        ],
-        overallRating: 9,
-        feedback: "Excellent support",
-      },
-      {
-        employee: employees[0]._id,
-        evaluatedBy: users[2]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Organize team event",
-            description: "HR team bonding",
-            status: "Not Achieved",
-          },
-        ],
-        scores: [{ criteria: "Organization", score: 8 }],
-        overallRating: 8,
-        feedback: "Looking forward to it",
-      },
-      {
-        employee: employees[1]._id,
-        evaluatedBy: users[2]._id,
-        period: "Q2 2025",
-        objectives: [
-          {
-            title: "Implement CI/CD",
-            description: "Automate deployment",
-            status: "In Progress",
-          },
-        ],
-        scores: [
-          { criteria: "Efficiency", score: 7 },
-          { criteria: "Reliability", score: 8 },
-        ],
-        overallRating: 7.5,
-        feedback: "Keep improving",
-      },
-    ]);
-
-    // 5️⃣ CREATE LEAVES DATA
-    await Leave.insertMany([
-      {
-        user: users[0]._id,
-        leaveType: "Sick Leave",
-        startDate: new Date("2025-02-10"),
-        endDate: new Date("2025-02-12"),
-        reason: "Fever and rest recommended",
-        status: "Approved",
-        adminComment: "Get well soon",
-      },
-      {
-        user: users[1]._id,
-        leaveType: "Casual Leave",
-        startDate: new Date("2025-03-01"),
-        endDate: new Date("2025-03-02"),
-        reason: "Family event",
-        status: "Pending",
-      },
-      {
-        user: users[2]._id,
-        leaveType: "Earned Leave",
-        startDate: new Date("2025-04-05"),
-        endDate: new Date("2025-04-09"),
-        reason: "Vacation trip",
-        status: "Approved",
-      },
-      {
-        user: users[3]._id,
-        leaveType: "Unpaid Leave",
-        startDate: new Date("2025-01-20"),
-        endDate: new Date("2025-01-21"),
-        reason: "Personal reasons",
-        status: "Rejected",
-        adminComment: "Project deadline week",
-      },
-      {
-        user: users[4]._id,
-        leaveType: "Sick Leave",
-        startDate: new Date("2025-02-15"),
-        endDate: new Date("2025-02-16"),
-        reason: "Medical appointment",
-        status: "Approved",
-      },
-      {
-        user: users[5]._id,
-        leaveType: "Casual Leave",
-        startDate: new Date("2025-03-10"),
-        endDate: new Date("2025-03-11"),
-        reason: "Travel",
-        status: "Pending",
-      },
-      {
-        user: users[1]._id,
-        leaveType: "Earned Leave",
-        startDate: new Date("2025-05-01"),
-        endDate: new Date("2025-05-05"),
-        reason: "Family vacation",
-        status: "Pending",
-      },
-    ]);
-
-    console.log(
-      "✅ Database seeded successfully with Users, Employees, Performances & Leaves"
-    );
-    process.exit();
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-};
-
-connectDB().then(seedData);*/

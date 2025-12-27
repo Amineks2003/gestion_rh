@@ -71,8 +71,8 @@ const PerformanceList = () => {
         </div>
 
         {/* Table Container */}
-        <div className="overflow-hidden shadow-xl rounded-2xl bg-white">
-          <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto w-full shadow-xl rounded-2xl bg-white">
+          <table className="min-w-[800px] w-full text-left border-collapse">
             <thead className="bg-gray-100 text-gray-700 uppercase text-sm tracking-wider">
               <tr>
                 <th className="py-4 px-6 text-center font-bold">Employee</th>
@@ -88,7 +88,7 @@ const PerformanceList = () => {
                 performances.map((p) => (
                   <tr key={p._id} className="border-b hover:bg-gray-50 transition">
                     <td className="py-4 px-6 text-center">
-                      {p.employee?.user?.name || "—"}
+                      {p.employee?.name || "—"}
                     </td>
                     <td className="py-4 px-6 text-center">
                       {p.employee?.department || "—"}
