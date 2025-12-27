@@ -1,21 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, LogOut } from "lucide-react";
 import axios from "../utils/axios";
-
-const navLinks = [
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/employees", label: "Employees" },
-  { to: "/performance", label: "Performances" },
-  { to: "/leaves", label: "Leaves" },
-  { to: "/announcements", label: "Announcements" },
-];
+import { AppContent } from "../context/AppContext";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { userData } = useContext(AppContent);
+
+  const navLinks = [
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "/employees", label: "Employees" },
+    { to: "/performance", label: "Performances" },
+    { to: "/leaves", label: "Leaves" },
+    // 1. Announcements moved BEFORE Profile
+    { to: "/announcements", label: "Announcements" },
+    // 2. Profile moved to the END
+    { 
+      to: userData ? `/profile/${userData._id}` : "/profile", 
+      label: "Profile" 
+    },
+  ];
 
   // Check if on auth page - show minimal navbar on these pages
   const isOnAuthPage = ['/login', '/email-verify', '/reset-password', '/'].includes(location.pathname);
@@ -77,7 +86,7 @@ const Navbar = () => {
         })}
       </div>
 
-      {/* Auth */}
+      {/* Auth / Logout Button */}
       <div className="hidden lg:flex items-center gap-4">
         <button
           onClick={handleLogout}
@@ -115,7 +124,7 @@ const Navbar = () => {
             );
           })}
           
-          {/* Mobile Auth Button */}
+          {/* Mobile Logout Button */}
           <button
             onClick={() => { setIsOpen(false); handleLogout(); }}
             className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors font-medium mt-2"

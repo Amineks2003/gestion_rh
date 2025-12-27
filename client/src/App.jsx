@@ -52,6 +52,7 @@ const App = () => {
         <Route path="/announcements/add" element={<AddAnnouncement />} />
         <Route path="/announcements/edit/:id" element={<EditAnnouncement />} />
         <Route path="/announcements/:id" element={<AnnouncementDetails />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </div> 
   )
