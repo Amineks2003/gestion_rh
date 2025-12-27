@@ -1,21 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // Icônes pour le menu mobile
-
-const navLinks = [
-  { to: "/", label: "Dashboard" },
-  { to: "/employees", label: "Employees" },
-  { to: "/performance", label: "Performances" },
-  { to: "/leaves", label: "Leaves" },
-  { to: "/profile", label: "Profile" },
-  { to: "/announcements", label: "Announcements" },
-  { to: "/login", label: "Login" },
-];
+import { Menu, X } from "lucide-react"; 
+import { AppContent } from "../context/appContext"; // 1. Import Context
 
 const Navbar = () => {
   const location = useLocation();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // 2. Get User Data from Context
+  const { userData } = useContext(AppContent);
+
+  // 3. Define links INSIDE the component so we can use userData
+  const navLinks = [
+    { to: "/dashboard", label: "Dashboard" },
+    { to: "/employees", label: "Employees" },
+    { to: "/performance", label: "Performances" },
+    { to: "/leaves", label: "Leaves" },
+    { 
+      // AUTOMATIC LOGIC:
+      // If userData exists, go to /profile/ID
+      // If not logged in, fallback to /profile
+      to: userData ? `/profile/${userData._id}` : "/profile", 
+      label: "Profile" 
+    },
+    { to: "/announcements", label: "Announcements" },
+    { to: "/login", label: "Login" },
+  ];
 
   return (
     <nav className="relative flex items-center justify-between px-4 sm:px-8 py-4 bg-gradient-to-r from-[#f6f7f0] via-[#f6f7f0] to-[#bff4ff] shadow-md rounded-b-[25px] z-10 font-sans">

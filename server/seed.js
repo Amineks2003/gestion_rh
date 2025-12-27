@@ -28,7 +28,7 @@ const seedData = async () => {
     await Performance.deleteMany();
     await Leave.deleteMany();
 
-    // 2️⃣ Create 6 users
+    // 2️⃣ Create 7 users
     const users = await User.insertMany([
       { name: "Alice", email: "alice@test.com", password: "123456" },
       { name: "Bob", email: "bob@test.com", password: "123456" },
@@ -36,9 +36,10 @@ const seedData = async () => {
       { name: "David", email: "david@test.com", password: "123456" },
       { name: "Eve", email: "eve@test.com", password: "123456" },
       { name: "Frank", email: "frank@test.com", password: "123456" },
+      { name: "salma", email: "salma@test.com", password: "123456" },
     ]);
 
-    // 3️⃣ Create 6 employees linked to users
+    // 3️⃣ Create 7 employees linked to users
     // ADDED: address and hireDate for the Profile Page
     const employees = await Employee.insertMany([
       {
@@ -92,6 +93,15 @@ const seedData = async () => {
         position: "Support Agent",
         phone: "678901",
         salary: 3800,
+        address: "303 Support Way, Gabes",    // <--- Added
+        hireDate: new Date("2023-11-05"),     // <--- Added
+      },
+      {
+        user: users[6]._id,
+        department: "HR",
+        position: "Secretary",
+        phone: "678901",
+        salary: 1500,
         address: "303 Support Way, Gabes",    // <--- Added
         hireDate: new Date("2023-11-05"),     // <--- Added
       },
