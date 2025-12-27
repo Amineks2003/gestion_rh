@@ -26,6 +26,7 @@ const AddLeave = () => {
   };
 
   return (
+
     <div className="max-w-full sm:max-w-2xl mx-auto bg-white p-4 sm:p-8 rounded-md shadow-md mt-6">
       <h2 className="text-xl sm:text-2xl font-bold mb-6 text-gray-800">Apply for Leave</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -35,12 +36,15 @@ const AddLeave = () => {
              name="leaveType" 
              onChange={handleChange} 
              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-300 focus:outline-none"
+
           >
             <option>Sick Leave</option>
             <option>Casual Leave</option>
             <option>Earned Leave</option>
+            <option>Unpaid Leave</option>
           </select>
         </div>
+
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -80,7 +84,7 @@ const AddLeave = () => {
           type="submit" 
           className="w-full sm:w-auto sm:px-6 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
         >
-          Submit Application
+
         </button>
       </form>
     </div>

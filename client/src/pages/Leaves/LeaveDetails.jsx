@@ -22,6 +22,7 @@ const LeaveDetails = () => {
     fetchLeave();
   }, [id]);
 
+
   if (loading) return <div className="p-6 text-center text-blue-600">Loading leave details...</div>;
   if (!leave) return <div className="p-6 text-center text-gray-600">Leave not found.</div>;
 
@@ -46,10 +47,12 @@ const LeaveDetails = () => {
         <div className="flex flex-col sm:flex-row sm:justify-between">
           <span className="text-gray-500 font-bold">Status:</span>
           <span>{leave.status}</span>
+
         </div>
         {leave.adminComment && (
           <div className="bg-red-50 p-3 rounded">
             <p className="text-red-800 font-bold">Admin Comment:</p>
+
             <p className="text-red-700 break-words">{leave.adminComment}</p>
           </div>
         )}
@@ -58,6 +61,7 @@ const LeaveDetails = () => {
         onClick={() => navigate('/leaves')} 
         className="mt-6 w-full sm:w-auto sm:px-6 bg-gray-600 text-white py-2 rounded hover:bg-gray-700 transition"
       >
+
         Back to List
       </button>
     </div>

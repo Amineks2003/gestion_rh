@@ -40,8 +40,11 @@ const PerformanceList = () => {
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
   return (
-    <div className="max-w-full sm:max-w-6xl mx-auto p-4 sm:p-8 mt-10 space-y-6">
-      <h2 className="text-2xl sm:text-3xl font-bold text-[#377eb7] text-center">Performance Reviews</h2>
+      <div className="max-w-6xl mx-auto p-8 mt-10 space-y-6">
+        {/* Titre centré */}
+        <h2 className="text-3xl font-bold text-[#377eb7] text-center">
+          Performance Reviews
+        </h2>
 
       <div className="flex justify-end">
         <Link

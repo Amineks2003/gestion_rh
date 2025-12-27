@@ -15,6 +15,7 @@ import EmployeeDetails from './pages/Employees/EmployeeDetails.jsx';
 import Dashboard from "./pages/dashboard.jsx";
 import LeaveList from './pages/Leaves/LeaveList';
 import LeaveDetails from './pages/Leaves/LeaveDetails';
+import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
 
         <Route path="/leaves" element={<LeaveList />} />
         <Route path="/leaves/:id" element={<LeaveDetails />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </div> 
   )
