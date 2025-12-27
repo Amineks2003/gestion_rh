@@ -16,6 +16,10 @@ import Dashboard from "./pages/dashboard.jsx";
 import LeaveList from './pages/Leaves/LeaveList';
 import LeaveDetails from './pages/Leaves/LeaveDetails';
 import Profile from "./pages/Profile/Profile";
+import AnnouncementList from './pages/Announcements/AnnouncementList.jsx';
+import AddAnnouncement from './pages/Announcements/AddAnnouncement.jsx';
+import EditAnnouncement from './pages/Announcements/EditAnnouncement.jsx';
+import AnnouncementDetails from './pages/Announcements/AnnouncementDetails.jsx';
 
 const App = () => {
   return (
@@ -43,6 +47,11 @@ const App = () => {
         <Route path="/leaves" element={<LeaveList />} />
         <Route path="/leaves/:id" element={<LeaveDetails />} />
         <Route path="/profile/:id" element={<Profile />} />
+
+        <Route path="/announcements" element={<AnnouncementList />} />
+        <Route path="/announcements/add" element={<AddAnnouncement />} />
+        <Route path="/announcements/edit/:id" element={<EditAnnouncement />} />
+        <Route path="/announcements/:id" element={<AnnouncementDetails />} />
       </Routes>
     </div> 
   )
