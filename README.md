@@ -186,7 +186,7 @@ gestion_rh/
 
 ###  1. Cloner le projet
 ```bash
-git clone <URL_DU_PROJET>
+git clone https://github.com/Amineks2003/gestion_rh.git
 cd projet-RH
 ```
 
