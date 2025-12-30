@@ -67,71 +67,118 @@ gestion_rh/
 │   ├── src/
 │   │   |
 │   │   ├── components/         # Composants réutilisables (UI)
-│   │   │   ├── Sidebar.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   └── Card.jsx
-│   │   │
+│   │   │   ├── Employees/         # Composants réutilisables (UI)
+│   │   │   │   ├── EmployeeCard.jsx
+│   │   │   │   ├── EmployeeForm.jsx
+│   │   │   │   └── EmployeeTable.jsx
+│   │   │   │ 
+│   │   │   ├── Performance/         # Composants réutilisables (UI)
+│   │   │   │   ├── DynamicListForm.jsx
+│   │   │   │   ├── ObjectivesForm.jsx
+│   │   │   │   └── ScoresForm.jsx
+│   │   │   │ 
+│   │   │   ├── navbar.jsx
+│   │   │   │ 
 │   │   ├── pages/              # Pages principales
-│   │   │   ├── Login.jsx
-│   │   │   ├── Employees.jsx
-│   │   │   ├── AddEmployee.jsx
-│   │   │   └── Performances    #dossier qui contient les fichiers .jsx relatifs  au performances
+│   │   │   ├── Announcements/        
+│   │   │   │   ├── AddAnnouncement.jsx
+│   │   │   │   ├── AnnouncementDetails.jsx
+│   │   │   │   ├── AnnouncementList.jsx
+│   │   │   │   └── EditAnnouncement.jsx
+│   │   │   │ 
+│   │   │   ├── auth/        
+│   │   │   │   ├── EmailVerify.jsx
+│   │   │   │   ├── Home.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   └── ResetPassword.jsx
+│   │   │   │ 
+│   │   │   ├── Employees/        
+│   │   │   │   ├── AddEmployee.jsx
+│   │   │   │   ├── EditEmployee.jsx
+│   │   │   │   ├── EmployeeDetails.jsx
+│   │   │   │   └── EmployeeList.jsx
+│   │   │   │ 
+│   │   │   ├── Leaves/        
+│   │   │   │   ├── AddLeave.jsx
+│   │   │   │   ├── LeaveDetails.jsx
+│   │   │   │   └── LeaveList.jsx
+│   │   │   │ 
+│   │   │   ├── Performance/        
+│   │   │   │   ├── AddPerformance.jsx
+│   │   │   │   ├── EditPerformance.jsx
+│   │   │   │   ├── PerformanceDetails.jsx
+│   │   │   │   └── PerformanceList.
+│   │   │   ├── Profile/         
+│   │   │   │   └── Profile.jsx
+│   │   │   ├── dashboard.jsx
 │   │   │
 │   │   ├── api/                # Appels API centralisés
-│   │   │   ├── userApi.js
+│   │   │   ├── announcementApi.js
 │   │   │   ├── employeesApi.js
 │   │   │   ├── performanceApi.js
+│   │   │   ├── leaveApi.jsx
+│   │   │   └── profileApi.js
 │   │   │
 │   │   ├── context/            # Gestion d'états globaux
-│   │   │   └── AuthContext.jsx
+│   │   │   └── appContext.jsx
 │   │   │
-│   │   ├── router/             # Configuration des routes (React Router)
-│   │   │   └── AppRouter.jsx
-│   │   │
-│   │   ├── index.css
-│   │   ├── App.css            # Styles globaux / configuration Tailwind
-│   │   ├──App.jsx
-│   │   └── main.jsx
+│   │   └── utils/  
+│   │      ├── index.css
+│   │      ├── App.css            # Styles globaux / configuration Tailwind
+│   │      ├── App.jsx
+│   │      └── main.jsx
 │   │
+│   ├── tailwind.config.js
+│   ├── vite.config.js
+│   ├── .env  
 │   └── package.json
 │
 │
 ├── server/                      # Back-end (Node + Express)
 │   ├── config/
-│   │   ├── db.js               # Connexion MongoDB
+│   │   ├── mongodb.js               # Connexion MongoDB
 │   │   ├── nodemailer.js       # Service d’envoi d’e-mails
-│   │   └── env.js              # Variables d’environnement
+│   │   └── emailTemplate.js
 │   │
 │   ├── controllers/            # Logique métier
 │   │   ├── userController.js
 │   │   ├── employeeController.js
 │   │   ├── performanceController.js
+│   │   ├── announcementController.js
+│   │   ├── dashboardController.js
+│   │   ├── leaveController.js
+│   │   ├── authController.js
+│   │   └── profileController.js
 │   │
 │   ├── middlewares/
-│   │   ├── errorMiddleware.js
-│   │   └── (authMiddleware.js) # utilisé uniquement si l’auth est réactivée
+│   │   ├── userAuth.js
+│   │   └── verifyToken.js # utilisé uniquement si l’auth est réactivée
 │   │
 │   ├── models/                 # Schémas de la base MongoDB
 │   │   ├── userModel.js
 │   │   ├── employeeModel.js
 │   │   ├── performanceModel.js
+│   │   ├── leaveModel.js
+│   │   └── announcementModel.js
 │   │
 │   ├── routes/                 # Endpoints de l’API
 │   │   ├── userRoutes.js
 │   │   ├── employeeRoutes.js
 │   │   ├── performanceRoutes.js
+│   │   ├── announcementRoutes.js
+│   │   ├── authRoutes.js
+│   │   ├── leaveRoutes.js
+│   │   ├── profileModel.js
+│   │   └── dashboardModel.js
 │   │
-│   ├── utils/                  # Fonctions utilitaires
-│   │   ├── emailTemplates.js
-│   │   └── helpers.js
-│   │
-│   ├── populate.js
-│   ├── populateData.js             # Script de remplissage initial de la BD
-│   ├── server.js               # Point d’entrée du serveur Node
+│   ├── .env  
+│   ├── seed.js  
+│   ├── server.js
+│   ├── package-lock.json.js                  # Point d’entrée du serveur Node
 │   └── package.json
-│
-├── .env                         # Variables d’environnement globales
-└── package.json                 # Gestion du projet global
+│   ├── getIDs.js                             # Pour récupérer les IDs si nécessaire
+│                   
+└── package-lock.json                 # Gestion du projet global
 
 ---
 
