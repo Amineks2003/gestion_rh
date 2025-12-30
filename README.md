@@ -219,7 +219,7 @@ CLIENT_URL=http://localhost:3001
 ###  4. Lancer le backend
 ```bash
 cd server
-npm run dev
+npm run start
 ```
 
 ###  5. Lancer le frontend
