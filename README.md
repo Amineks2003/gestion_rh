@@ -2,7 +2,7 @@
 
  ## 1. Choix du Framework
 
-Le projet utilise **React.js** pour la partie frontend et **Node.js + Express.js** pour la partie backend.
+Le projet utilise **React.js** pour la partie frontend et **Express.js** pour la partie backend.
 
  Pourquoi ce choix ?
 
@@ -12,7 +12,7 @@ Le projet utilise **React.js** pour la partie frontend et **Node.js + Express.js
 - Gestion intuitive des états (Hooks, Context)  
 - Idéal pour développer des interfaces modernes, fluides et dynamiques  
 
-**Node.js + Express.js**
+**Express.js**
 -  Performances élevées pour les API REST  
 -  Architecture simple et extensible  
 -  Gestion facile de l’authentification JWT  
@@ -48,8 +48,13 @@ Ce stack **MERN (MongoDB + Express + React + Node)** permet une plateforme RH co
 - Objectifs, Score d’évaluation, Commentaires, Historique des évaluations  
 - Mise à jour des performances (score, commentaire, objectifs)  
 - Suppression d’une évaluation  
-- Ajout d’une nouvelle évaluation  
+- Ajout d’une nouvelle évaluation
 
+### Gestion des demandes de congé
+- Affichage des demandes de congés 
+- Mise à jour des demandes: Approuver ou rejeter une demande. 
+
+  
 ### Envoi d’email (Nodemailer)
 - Envoi du code de réinitialisation du mot de passe  
 - Messagerie sécurisée (SMTP)  
@@ -199,21 +204,8 @@ npm install
 
 **Frontend :**
 ```bash
-cd ../client
+cd client
 npm install
-```
-
-###  3. Configurer les variables d’environnement
-Créer un fichier `.env` dans `/server` :
-
-```
-MONGO_URI=your_mongodb_connection
-JWT_SECRET=your_secret_key
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_USER=your_email
-EMAIL_PASS=your_email_password
-CLIENT_URL=http://localhost:3001
 ```
 
 ###  4. Lancer le backend
@@ -237,7 +229,7 @@ npm run dev
 | Domaine        | Technologie                  |
 |----------------|------------------------------|
 | Frontend       | React.js, Axios, React Router |
-| Backend        | Node.js, Express.js          |
+| Backend        | Express.js          |
 | Base de données| MongoDB + Mongoose           |
 | Sécurité       | JWT, bcrypt                  |
 | Mail           | Nodemailer                   |
@@ -249,12 +241,15 @@ npm run dev
 ##  6. Conclusion
 
 Ce projet fournit une **plateforme RH complète** permettant de gérer :  
-- l’authentification  
-- les employés  
-- les performances  
-- les évaluations  
-- les réinitialisations de mots de passe  
-- l’envoi d’emails  
+- L’authentification  
+- Les employés  
+- Les performances  
+- Les évaluations  
+- Les réinitialisations de mots de passe  
+- L’envoi d’emails
+- Les demandes de congé
+- Les annonces
+- Le profile
 
 ---
 ```  
