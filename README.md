@@ -134,7 +134,7 @@ gestion_rh/
 │   └── package.json
 │
 │
-├── server/                      # Back-end (Node + Express)
+├── server/                      
 │   ├── config/
 │   │   ├── mongodb.js               # Connexion MongoDB
 │   │   ├── nodemailer.js       # Service d’envoi d’e-mails
